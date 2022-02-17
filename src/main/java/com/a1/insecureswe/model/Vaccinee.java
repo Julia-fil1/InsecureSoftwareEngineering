@@ -2,6 +2,7 @@ package com.a1.insecureswe.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "vaccinees")
@@ -86,7 +87,9 @@ public class Vaccinee implements User{
     }
 
     public void setDob(LocalDate dob) {
-        this.dob = dob;
+        if (Period.between(dob, LocalDate.now()).getYears() >= 18) {
+            this.dob = dob;
+        }
     }
 
     public String getPpsNumber() {
@@ -94,7 +97,10 @@ public class Vaccinee implements User{
     }
 
     public void setPpsNumber(String ppsNumber) {
-        this.ppsNumber = ppsNumber;
+        if(ppsNumber.matches("^[0-9]{7}[A-Z]{1,2}$")) {
+            this.ppsNumber = ppsNumber;
+        }
+
     }
 
     public String getAddress() {
