@@ -6,7 +6,7 @@ import java.time.Period;
 
 @Entity
 @Table(name = "vaccinees")
-public class Vaccinee implements User{
+public class UserInfo implements User{
     @Id
     @GeneratedValue
     private Long id;

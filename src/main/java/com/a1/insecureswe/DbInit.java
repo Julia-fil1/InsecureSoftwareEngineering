@@ -1,7 +1,7 @@
 package com.a1.insecureswe;
 
-import com.a1.insecureswe.model.Vaccinee;
-import com.a1.insecureswe.repository.VaccineeRepository;
+import com.a1.insecureswe.model.UserInfo;
+import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
@@ -12,32 +12,32 @@ import java.util.List;
 @Service
 public class DbInit implements CommandLineRunner {
 
-    private VaccineeRepository vaccineeRepository;
+    private UserInfoRepository userInfoRepository;
 
-    public DbInit(VaccineeRepository vaccineeRepository) {
-        this.vaccineeRepository = vaccineeRepository;
+    public DbInit(UserInfoRepository user_info_repository) {
+        this.userInfoRepository = user_info_repository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        this.vaccineeRepository.deleteAll();
+        this.userInfoRepository.deleteAll();
 
-        Vaccinee vaccinee1 = new Vaccinee();
+        UserInfo user_info = new UserInfo();
 
-        vaccinee1.setId(1L);
-        vaccinee1.setUsername("john");
-        vaccinee1.setPassword("password");
-        vaccinee1.setName("John");
-        vaccinee1.setSurname("Doe");
-        vaccinee1.setDob(LocalDate.of(1985, 10, 25));
-        vaccinee1.setPpsNumber("1234567C");
-        vaccinee1.setAddress("10 Main Street, Dundrum, D14 A1B3");
-        vaccinee1.setPhoneNumber("087123456");
-        vaccinee1.setEmail("john.doe@gmail.com");
-        vaccinee1.setNationality("Irish");
+        user_info.setId(1L);
+        user_info.setUsername("john");
+        user_info.setPassword("password");
+        user_info.setName("John");
+        user_info.setSurname("Doe");
+        user_info.setDob(LocalDate.of(1985, 10, 25));
+        user_info.setPpsNumber("1234567C");
+        user_info.setAddress("10 Main Street, Dundrum, D14 A1B3");
+        user_info.setPhoneNumber("087123456");
+        user_info.setEmail("john.doe@gmail.com");
+        user_info.setNationality("Irish");
 
-        List<Vaccinee> vaccinees = Arrays.asList(vaccinee1);
+        List<UserInfo> user_info1 = Arrays.asList(user_info);
 
-        this.vaccineeRepository.saveAll(vaccinees);
+        this.userInfoRepository.saveAll(user_info1);
     }
 }
