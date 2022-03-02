@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/static/css/appointment.css">
+<head th:replace="~{home_page :: head}"></head>
+<body>
+    <nav th:replace="home_page :: navbar"> </nav>
+    <form th:action="@{/appointment_register}" th:object="${appointment}">
+        <div class="date-div">
+            <label for="date">Choose a Date and Time:</label>
+            <input type="datetime-local" id="date" name="date">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Check for Availability</button>
+        </div>
+        <!--<div>
+            <label for="time">Choose a Time:</label>
+            <input type="time" id="time" name="time">
+        </div>-->
+    </form>
+
+</body>
+</html>
