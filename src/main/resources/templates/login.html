@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <link rel="stylesheet" href="/css/main.css">
+    <meta charset="UTF-8">
+    <title>HOME_PAGE</title>
+
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar" >
+    <!-- LOGO -->
+    <div class="logo">InsecureSWE</div>
+    <!-- NAVIGATION MENU -->
+    <ul class="nav-links">
+        <!-- NAVIGATION MENUS -->
+        <div class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Forum</a></li>
+            <li><a href="/register">Signup</a></li>
+            <li><a href="/login">Login</a></li>
+        </div>
+    </ul>
+</nav>
+
+<div class="mainbody">
+
+    <div class="login-container">
+        <form class="login-form" method="POST" th:action="@{/login}">
+
+            <table>
+                <th>Log In</th>
+                <tr>
+                    <td>Username</td>
+                </tr>
+                <tr>
+                    <td><input name="username" type="text" placeholder="Enter username" required></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                </tr>
+                <tr>
+                    <td><input name="password" type="password" placeholder="Enter password" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit">Sign In</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="message">Not Registered? <a th:href="@{/registration}">Create Account</a></p>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <form method="POST" th:action="@{/logout}">
+            <button type="submit">Logout</button>
+        </form>
+
+
+    </div>
+
+    <hr/>
+
+    <div class="bottomnav">
+        <table>
+            <tr>
+                <td><a href="/login">Log In</a></td>
+                <td><a href="/about">About</a></td>
+                <td><a href="/shop">Shop</a></td>
+                <td><a href="/home">Home</a></td>
+            </tr>
+        </table>
+        <p>&#169; 2021 Beam.com</p>
+        <div class="icon-container">
+            <i class="fa fa-cc-visa" style="color:navy;"></i>
+            <i class="fa fa-cc-amex" style="color:blue;"></i>
+            <i class="fa fa-cc-mastercard" style="color:red;"></i>
+            <i class="fa fa-cc-discover" style="color:orange;"></i>
+        </div>
+    </div>
+</div>
+</body>
+</html>
