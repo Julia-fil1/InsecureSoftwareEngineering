@@ -49,6 +49,11 @@ public class MainController {
         if(user == null)
             return "redirect:login";
         else
-            return "redirect:/";
+            return "redirect:logged_in_home";
+    }
+
+    @GetMapping("/logged_in_home")
+    public String loggedIn() {
+        return "logged_in_home.html";
     }
 }
