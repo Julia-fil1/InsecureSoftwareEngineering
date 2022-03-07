@@ -36,4 +36,24 @@ public class MainController {
 
         return "register_success.html";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login.html";
+    }
+
+    @PostMapping(value = "/login")
+    public String log(UserInfo loggingUser) {
+        UserInfo user = userInfoRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
+
+        if(user == null)
+            return "redirect:login";
+        else
+            return "redirect:logged_in_home";
+    }
+
+    @GetMapping("/logged_in_home")
+    public String loggedIn() {
+        return "logged_in_home.html";
+    }
 }

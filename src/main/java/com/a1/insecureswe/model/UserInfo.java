@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 
-@Entity
+@Entity(name = "vaccinees")
 @Table(name = "vaccinees")
 public class UserInfo implements User{
     @Id
