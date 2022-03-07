@@ -31,8 +31,7 @@ public class MainController {
 //        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 //        String encodedPassword = passwordEncoder.encode(user.getPassword());
 //        user.setPassword(encodedPassword);
-
-        userInfoRepository.save(user);
+        this.userInfoRepository.save(user);
 
         return "register_success.html";
     }

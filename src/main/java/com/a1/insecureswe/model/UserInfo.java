@@ -1,5 +1,7 @@
 package com.a1.insecureswe.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -24,6 +26,7 @@ public class UserInfo implements User{
     private String surname;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
     @Column(unique = true)
