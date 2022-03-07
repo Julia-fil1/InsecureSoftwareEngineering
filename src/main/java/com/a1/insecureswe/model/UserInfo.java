@@ -20,6 +20,9 @@ public class UserInfo implements User{
     private String password;
 
     @Column
+    private final Boolean isAdmin = false;
+
+    @Column
     private String name;
 
     @Column
@@ -67,6 +70,10 @@ public class UserInfo implements User{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 
     public String getName() {

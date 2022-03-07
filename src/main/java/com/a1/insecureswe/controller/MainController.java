@@ -1,6 +1,9 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.model.Staff;
+import com.a1.insecureswe.model.User;
 import com.a1.insecureswe.model.UserInfo;
+import com.a1.insecureswe.repository.StaffRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +20,9 @@ public class MainController {
 
     @Autowired
     private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -42,11 +48,15 @@ public class MainController {
     }
 
     @PostMapping(value = "/login")
-    public String log(UserInfo loggingUser) {
+    public String log(User loggingUser) {
         UserInfo user = userInfoRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
+        Staff staff = staffRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
 
-        if(user == null)
+        if(user == null && staff == null)
             return "redirect:login";
+        else if(staff != null) {
+            return "redirect:logged_in_home_staff";
+        }
         else
             return "redirect:logged_in_home";
     }
@@ -54,5 +64,10 @@ public class MainController {
     @GetMapping("/logged_in_home")
     public String loggedIn() {
         return "logged_in_home.html";
+    }
+
+    @GetMapping("/logged_in_home_staff")
+    public String loggedInStaff() {
+        return "logged_in_home_staff.html";
     }
 }
