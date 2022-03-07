@@ -92,7 +92,13 @@
                 <div class="form-group row">
                     <label class="col-4 col-form-label">Nationality: </label>
                     <div class="col-8">
-                        <input type="text" th:field="*{nationality}" class="form-control" required />
+<!--                        <input type="text" th:field="*{nationality}" class="form-control" required />-->
+                        <select th:field="*{nationality}" class="form-control" required >
+                            <option value="American">American</option>
+                            <option value="Irish">Irish</option>
+                            <option value="Polish">Polish</option>
+                            <option value="Romanian">Romanian</option>
+                        </select>
                     </div>
                 </div>
 
