@@ -1,12 +1,13 @@
 package com.a1.insecureswe.controller;
 
-import com.a1.insecureswe.model.UserInfo;
-import com.a1.insecureswe.repository.UserInfoRepository;
+import com.a1.insecureswe.model.*;
+import com.a1.insecureswe.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -18,6 +19,12 @@ public class MainController {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    private StaffRepository staffRepository;
+
+    @Autowired
+    private ForumRepository forumRepository;
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserInfo());
@@ -26,14 +33,7 @@ public class MainController {
 
     @PostMapping("/process_register")
     public String processRegister(UserInfo user) {
-//        Was trying to encode password WIP -roland
-
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-
-        userInfoRepository.save(user);
-
+        this.userInfoRepository.save(user);
         return "register_success.html";
     }
 
@@ -43,11 +43,15 @@ public class MainController {
     }
 
     @PostMapping(value = "/login")
-    public String log(UserInfo loggingUser) {
+    public String log(User loggingUser) {
         UserInfo user = userInfoRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
+        Staff staff = staffRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
 
-        if(user == null)
+        if(user == null && staff == null)
             return "redirect:login";
+        else if(staff != null) {
+            return "redirect:logged_in_home_staff";
+        }
         else
             return "redirect:logged_in_home";
     }
@@ -56,4 +60,26 @@ public class MainController {
     public String loggedIn() {
         return "logged_in_home.html";
     }
+
+    @GetMapping("/logged_in_home_staff")
+    public String loggedInStaff() {
+        return "logged_in_home_staff.html";
+    }
+
+    @GetMapping("/forum")
+    public String showForumForm(Model model) {
+        model.addAttribute("forum", new Forum());
+        List<Forum> listForum = forumRepository.findAll();
+        model.addAttribute("listForum", listForum);
+        return "forum_page.html";
+    }
+
+    @PostMapping("/process_question")
+    public String processQuestion(Forum forum) {
+        this.forumRepository.save(forum);
+        return "redirect:forum";
+    }
+
+    @GetMapping("/history")
+    public String history() { return "history.html"; }
 }

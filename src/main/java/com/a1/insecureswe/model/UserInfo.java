@@ -1,5 +1,7 @@
 package com.a1.insecureswe.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -18,12 +20,16 @@ public class UserInfo implements User{
     private String password;
 
     @Column
+    private final Boolean isAdmin = false;
+
+    @Column
     private String name;
 
     @Column
     private String surname;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
     @Column(unique = true)
@@ -64,6 +70,10 @@ public class UserInfo implements User{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 
     public String getName() {

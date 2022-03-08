@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head">
-    <link rel="stylesheet" href="/css/main.css">
-    <meta charset="UTF-8">
-    <title>HOME_PAGE</title>
-
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-</head>
+<head th:replace="~{home_page :: head}"></head>
 <body>
 <nav th:fragment="navbar" class="navbar" >
     <!-- LOGO -->
@@ -18,7 +10,7 @@
         <!-- NAVIGATION MENUS -->
         <div class="menu">
             <li><a href="/">Home</a></li>
-            <li><a href="/forum">Forum</a></li>
+            <li><a href="/">Forum</a></li>
             <li><a href="/book">Bookings</a></li>
             <li><a href="/history">History</a></li>
             <li><a href="/statistics">Statistics</a></li>
@@ -27,9 +19,19 @@
         </div>
     </ul>
 </nav>
-<div class="body">
-    <h1>Getting your COVID-19 vaccine</h1>
-    <img src="/images/istockphoto-1283486156-612x612.jpg">
-</div>
+
+    <div class="container text-center">
+        <div>
+            <h1>User History</h1>
+        </div>
+        <div align="center">
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th>Date</th>
+                    <th>Appointment Info</th>
+                </tr>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
