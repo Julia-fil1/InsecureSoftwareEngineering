@@ -70,7 +70,4 @@ public class MainController {
     public String loggedInStaff() {
         return "logged_in_home_staff.html";
     }
-
-    @GetMapping("/history")
-    public String history() { return "history.html"; }
 }
