@@ -9,14 +9,14 @@
         <div class="form-group row">
             <label for="appdate" class="col-4 col-form-label">Choose a Date:</label>
             <div class="col-8">
-                <input type="date" id="appdate" name="appdate" th:field="*{appointmentDate}" required> <!--min="${now}" th:attr="min=#{now}"-->
+                <input type="date" id="appdate" name="appdate" th:field="*{appointmentDate}" th:min="${tomorrow}" th:max="${maxDate}" required> <!--min="${now}" th:attr="min=#{now}"-->
             </div>
         </div>
 
         <div class="form-group row">
             <label for="apptime" class="col-4 col-form-label">Choose a Time:</label>
             <div class="col-8">
-                <input type="time" id="apptime" name="apptime" th:field="*{appointmentTime}" required>
+                <input type="time" id="apptime" name="apptime" th:field="*{appointmentTime}" min="09:00" max="21:00" required>
             </div>
         </div>
 

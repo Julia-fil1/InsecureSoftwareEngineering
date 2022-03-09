@@ -60,8 +60,8 @@ public class VaccineeController {
     @PostMapping("/set_appointment")
     public String saveAppointment(Appointment appointment, Model model) throws AppointmentTakenException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserInfo currentUser;
 
+        UserInfo currentUser;
         String username;
         if(principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
@@ -82,24 +82,17 @@ public class VaccineeController {
         }
 
         // Check to make sure selected date & time aren't already taken at the selected location
-        /*List<Appointment> appointments = appointmentRepository.findAll();
+        List<Appointment> appointments = appointmentRepository.findAll();
         for (Appointment app : appointments) {
             if (app.getAppointmentDate().isEqual(appointment.getAppointmentDate()) && app.getAppointmentTime().equals(appointment.getAppointmentTime()) && app.getLocation().equals(appointment.getLocation())) {
                 throw new AppointmentTakenException(app.getAppointmentDate());
             }
-        }*/
+        }
 
         // Adding appointment to user's list/history
-        //List<UserInfo> users = userInfoRepository.findAll();
-        List<Appointment> appointments = currentUser.getAppointments();
-        appointments.add(appointment);
-        currentUser.setAppointments(appointments);
-        /*for (UserInfo user : users) {
-            if(user.getId() == currentUser.getId()) {
-                List<Appointment> appointments = user.getAppointments();
-                appointments.add(appointment);
-            }
-        }*/
+        List<Appointment> userAppointments = currentUser.getAppointments();
+        userAppointments.add(appointment);
+        currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
         return "vaccinee/booking_success";
@@ -120,6 +113,13 @@ public class VaccineeController {
     @GetMapping("/book_appointment")
     public String createAppointment(Model model) {
         model.addAttribute("appointment", new Appointment());
+
+        // Setting earliest time/date of appointment to be 09:00 tomorrow
+        // Last appointment allowed at 21:00 for working people throughout the week
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate maxDate= tomorrow.plusMonths(6);
+        model.addAttribute("tomorrow", tomorrow);
+        model.addAttribute("maxDate", maxDate);
         return "/vaccinee/book_appointment";
     }
 }
