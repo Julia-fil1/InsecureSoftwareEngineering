@@ -1,10 +1,12 @@
 package com.a1.insecureswe;
 
+import com.a1.insecureswe.model.AllUsers;
 import com.a1.insecureswe.model.Forum;
 import com.a1.insecureswe.model.Staff;
 import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,25 +18,32 @@ public class DbInit implements CommandLineRunner {
 
     private UserInfoRepository userInfoRepository;
     private StaffRepository staffRepository;
+    private UserRepository userRepository;
     private ForumRepository forumRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public DbInit(UserInfoRepository user_info_repository, StaffRepository staffRepository, ForumRepository forumRepository) {
+    public DbInit(UserInfoRepository user_info_repository, StaffRepository staffRepository, UserRepository userRepository, ForumRepository forumRepository, PasswordEncoder passwordEncoder) {
         this.userInfoRepository = user_info_repository;
         this.staffRepository = staffRepository;
+        this.userRepository = userRepository;
         this.forumRepository = forumRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
         this.userInfoRepository.deleteAll();
         this.staffRepository.deleteAll();
+        this.userRepository.deleteAll();
         this.forumRepository.deleteAll();
 
         UserInfo user_info = new UserInfo();
 
 //        user_info.setId(1L);
         user_info.setUsername("john");
-        user_info.setPassword("password");
+        user_info.setPassword(passwordEncoder.encode("password"));
+        user_info.setRole("VACCINEE");
+        user_info.setEnabled(1);
         user_info.setName("John");
         user_info.setSurname("Doe");
         user_info.setDob(LocalDate.of(1985, 10, 25));
@@ -44,11 +53,10 @@ public class DbInit implements CommandLineRunner {
         user_info.setEmail("john.doe@gmail.com");
         user_info.setNationality("Irish");
 
-        Staff staff =  new Staff();
+        AllUsers newVaccineeUser = new AllUsers(user_info.getUsername(), user_info.getPassword(), user_info.getRole(), 1);
 
-//        staff.setId(1L);
-        staff.setUsername("admin");
-        staff.setPassword("password");
+        Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", 1);
+        AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), 1);
 
         Forum forum = new Forum();
 
@@ -57,10 +65,12 @@ public class DbInit implements CommandLineRunner {
 
         List<UserInfo> user_info1 = Arrays.asList(user_info);
         List<Staff> staffList = Arrays.asList(staff);
+        List<AllUsers> allUsersList = Arrays.asList(newVaccineeUser, newStaffUser);
         List<Forum> forumList = Arrays.asList(forum);
 
         this.userInfoRepository.saveAll(user_info1);
         this.staffRepository.saveAll(staffList);
+        this.userRepository.saveAll(allUsersList);
         this.forumRepository.saveAll(forumList);
     }
 }
