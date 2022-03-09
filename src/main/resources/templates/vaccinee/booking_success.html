@@ -6,10 +6,29 @@
 <nav th:replace="home_page :: navbar"> </nav>
     <div>
         <h3>Appointment Confirmed.</h3>
-        <h4>Details:</h4>
+        <!--Might display details of appointment when confirming booking-->
+        <!--<h4>Details:</h4>
+        <table id="appTable">
+            <thead>
+            <tr>
+&lt;!&ndash;                <th><strong>Name</strong></th>&ndash;&gt;
+                <th><strong>Date</strong></th>
+                <th><strong>Time</strong></th>
+                <th><strong>Location</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:object="appointment">
+                <td th:text="${appointment.appointmentDate}"></td>
+                <td th:text="${appointment.appointmentTime}"></td>
+                <td th:text="${appointment.appointmentLocation}"></td>
+            </tr>
+            </tbody>
+        </table>-->
+
         <br>
         <br>
-        <a href="/" class="return">Return Home</a>
+        <a href="/logged_in_home" class="return">Return Home</a>
 
 
     </div>
