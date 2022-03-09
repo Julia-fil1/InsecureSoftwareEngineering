@@ -69,7 +69,7 @@ public class VaccineeController {
             username = principal.toString();
         }
         currentUser = userInfoRepository.findByUsername(username);
-        appointment.setUserId(currentUser.getId());
+        //appointment.setUserId(currentUser.getId());
 
         // Ensure date isn't any earlier than today/now
         if(appointment.getAppointmentDate().isBefore(LocalDate.now()) && appointment.getAppointmentTime().isBefore(LocalTime.now())) {
@@ -77,9 +77,9 @@ public class VaccineeController {
         }
 
         // Check to ensure user can't have more than 2 appointments (fully vaccinated)
-        /*if(currentUser.getAppointments().size() == 2) {
-            return "/";
-        }*/
+        if(currentUser.getAppointments().size() == 2) {
+            return "/logged_in_home.html";
+        }
 
         // Check to make sure selected date & time aren't already taken at the selected location
         /*List<Appointment> appointments = appointmentRepository.findAll();
@@ -88,6 +88,19 @@ public class VaccineeController {
                 throw new AppointmentTakenException(app.getAppointmentDate());
             }
         }*/
+
+        // Adding appointment to user's list/history
+        //List<UserInfo> users = userInfoRepository.findAll();
+        List<Appointment> appointments = currentUser.getAppointments();
+        appointments.add(appointment);
+        currentUser.setAppointments(appointments);
+        /*for (UserInfo user : users) {
+            if(user.getId() == currentUser.getId()) {
+                List<Appointment> appointments = user.getAppointments();
+                appointments.add(appointment);
+            }
+        }*/
+
         appointmentRepository.save(appointment);
         return "vaccinee/booking_success";
     }
