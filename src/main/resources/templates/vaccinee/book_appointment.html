@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{home_page :: head}">
+</head>
+<body>
+    <nav th:replace="home_page :: navbar"> </nav>
+    <form th:action="@{/vaccinee/set_appointment}" th:object="${appointment}" method="post">
+
+        <div class="form-group row">
+            <label for="appdate" class="col-4 col-form-label">Choose a Date:</label>
+            <div class="col-8">
+                <input type="date" id="appdate" name="appdate" th:field="*{appointmentDate}" required> <!--min="${now}" th:attr="min=#{now}"-->
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="apptime" class="col-4 col-form-label">Choose a Time:</label>
+            <div class="col-8">
+                <input type="time" id="apptime" name="apptime" th:field="*{appointmentTime}" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="location" class="col-4 col-form-label">Choose a vaccination centre:</label>
+            <div class="col-8">
+                <select name="location" id="location" th:field="*{location}" required>
+                    <option value="ucd">UCD centre</option>
+                    <option value="dcu">DCU centre</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Check for Availability</button>
+        </div>
+    </form>
+
+</body>
+</html>
