@@ -9,6 +9,8 @@ import java.time.Period;
 @Entity(name = "vaccinees")
 @Table(name = "vaccinees")
 public class UserInfo implements User{
+    private boolean isNewUser;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -157,4 +159,8 @@ public class UserInfo implements User{
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
+
+    public Boolean getIsNewUser() { return isNewUser; }
+
+    public void  setIsNewUser(boolean isNewUser) { this.isNewUser = isNewUser; }
 }

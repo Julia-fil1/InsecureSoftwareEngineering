@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{home_page :: head}"></head>
+<body>
+<nav th:fragment="navbar" class="navbar" >
+    <!-- LOGO -->
+    <div class="logo">InsecureSWE</div>
+    <!-- NAVIGATION MENU -->
+    <ul class="nav-links">
+        <!-- NAVIGATION MENUS -->
+        <div class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Forum</a></li>
+            <li><a href="/book">Bookings</a></li>
+            <li><a href="/history">History</a></li>
+            <li><a href="/statistics">Statistics</a></li>
+            <li><a href="/register">Signup</a></li>
+            <li><a href="/login">Logout</a></li>
+        </div>
+    </ul>
+</nav>
+
+<div class="container text-center">
+    <div>
+        <h1>User History</h1>
+    </div>
+    <div align="center">
+        <p>There is no record of recent activity .</p>
+    </div>
+</div>
+</body>
+</html>

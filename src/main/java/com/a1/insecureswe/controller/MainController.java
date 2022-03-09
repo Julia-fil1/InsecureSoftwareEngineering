@@ -43,6 +43,7 @@ public class MainController {
         user.setEnabled(1);
         this.userInfoRepository.save(user);
         this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), 1));
+        user.setIsNewUser(true);
         return "register_success.html";
     }
 
@@ -89,8 +90,8 @@ public class MainController {
         return "redirect:forum";
     }
 
-    @GetMapping("/history")
-    public String history() { return "history.html"; }
+//    @GetMapping("/history")
+//    public String history() { return "history_record.html"; }
 
     @GetMapping("/adminOnly")
     public String only() {

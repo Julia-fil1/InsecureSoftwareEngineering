@@ -50,9 +50,6 @@ public class VaccineeController {
     @Autowired
     UserInfoRepository userInfoRepository;
 
-    @GetMapping("/history")
-    public String history() { return "/vaccinee/history.html"; }
-
     @PostMapping("/set_appointment")
     public String saveAppointment(Appointment appointment) throws AppointmentTakenException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -77,6 +74,8 @@ public class VaccineeController {
             }
         }*/
         appointmentRepository.save(appointment);
+        currentUser.setIsNewUser(false);
+        setHistory(currentUser.getIsNewUser());
         return "vaccinee/booking_success";
     }
 
@@ -85,4 +84,19 @@ public class VaccineeController {
         model.addAttribute("appointment", new Appointment());
         return "/vaccinee/book_appointment";
     }
+
+    @GetMapping("/history")
+    public String setHistory(Boolean isNewUser) {
+        if(!isNewUser) {
+            return "vaccinee/history_record";
+        }
+        else {
+            return "vaccinee/history_clean";
+        }
+    }
+
+//    @PostMapping("/set_history")
+//    public String history() {
+//        return "/vaccinee/history_record.html";
+//    }
 }
