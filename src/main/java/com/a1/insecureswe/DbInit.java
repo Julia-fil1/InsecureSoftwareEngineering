@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -76,10 +77,15 @@ public class DbInit implements CommandLineRunner {
         forum_3.setAnswer("You can still get COVID-19 after vaccination. But being vaccinated can reduce how serious " +
                 "your symptoms will be.");
 
+        Forum forum_4 = new Forum();
+
+        forum_4.setQuestion("Unanswered test question. Just enter the id and input your answer.");
+        forum_4.setAnswer("");
+
         List<UserInfo> user_info1 = Arrays.asList(user_info);
         List<Staff> staffList = Arrays.asList(staff);
         List<AllUsers> allUsersList = Arrays.asList(newVaccineeUser, newStaffUser);
-        List<Forum> forumList = Arrays.asList(forum_1,forum_2,forum_3);
+        List<Forum> forumList = Arrays.asList(forum_1,forum_2,forum_3,forum_4);
 
         this.userInfoRepository.saveAll(user_info1);
         this.staffRepository.saveAll(staffList);
