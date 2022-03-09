@@ -1,12 +1,14 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.exception.QuestionNotFoundException;
+import com.a1.insecureswe.model.Forum;
 import com.a1.insecureswe.model.UserInfo;
+import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +17,9 @@ import java.util.List;
 public class StaffController {
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ForumRepository forumRepository;
 
     @RequestMapping({"/list"})
     public String viewAdminPage(Model model){
@@ -26,5 +31,21 @@ public class StaffController {
     @GetMapping("login")
     public String login() {
         return "admin/login";
+    }
+
+    @GetMapping("/forum")
+    public String showAdminForumForm(Model model) {
+        model.addAttribute("forum", new Forum());
+        List<Forum> listForum = forumRepository.findAll();
+        model.addAttribute("listForum", listForum);
+        return "/admin/admin_forum_page.html";
+    }
+
+    @PostMapping("/answer_question")
+    public String processQuestion(Forum forum) throws QuestionNotFoundException {
+        Forum forum1 = forumRepository.findById(forum.getId()).orElseThrow(() -> new QuestionNotFoundException(forum.getId()));
+        forum1.setAnswer(forum.getAnswer());
+        this.forumRepository.save(forum1);
+        return "redirect:forum";
     }
 }
