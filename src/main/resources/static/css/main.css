@@ -53,3 +53,29 @@ li {
 .login-form table td{
     padding: 1px;
 }
+/* -------------------------------FORUM STYLING------------------------------- */
+.forumTableTitle {
+    padding-top: 12px;
+}
+.forumTable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.forumTable td, .forumTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.forumTable tr:nth-child(even) {
+    background-color: #e1f8f7;
+}
+
+.forumTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #008081;
+    color: white;
+}

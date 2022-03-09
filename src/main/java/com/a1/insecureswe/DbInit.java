@@ -58,15 +58,28 @@ public class DbInit implements CommandLineRunner {
         Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", 1);
         AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), 1);
 
-        Forum forum = new Forum();
+        Forum forum_1 = new Forum();
 
-        forum.setQuestion("Is Daiana short");
-        forum.setAnswer("YES!");
+        forum_1.setQuestion("Are Covid vacinnees safe?");
+        forum_1.setAnswer("Vaccines are the safest way to prevent infectious diseases. They teach your immune system " +
+                "(your body's natural defences) how to protect you from a specific virus.");
+
+        Forum forum_2 = new Forum();
+
+        forum_2.setQuestion("Can I get a different vaccination type than the first one I received?");
+        forum_2.setAnswer("Studies have found that the immune response after getting different vaccines may be as good " +
+                "as getting the same vaccine. In some cases, it can be better.");
+
+        Forum forum_3 = new Forum();
+
+        forum_3.setQuestion("Can I still get Covid after I have been vaccinated?");
+        forum_3.setAnswer("You can still get COVID-19 after vaccination. But being vaccinated can reduce how serious " +
+                "your symptoms will be.");
 
         List<UserInfo> user_info1 = Arrays.asList(user_info);
         List<Staff> staffList = Arrays.asList(staff);
         List<AllUsers> allUsersList = Arrays.asList(newVaccineeUser, newStaffUser);
-        List<Forum> forumList = Arrays.asList(forum);
+        List<Forum> forumList = Arrays.asList(forum_1,forum_2,forum_3);
 
         this.userInfoRepository.saveAll(user_info1);
         this.staffRepository.saveAll(staffList);
