@@ -50,6 +50,11 @@ public class VaccineeController {
     @Autowired
     UserInfoRepository userInfoRepository;
 
+    @GetMapping("/logged_in_home")
+    public String loggedIn() {
+        return "/vaccinee/logged_in_home";
+    }
+
     @GetMapping("/history")
     public String history() { return "/vaccinee/history.html"; }
 

@@ -33,6 +33,11 @@ public class StaffController {
         return "admin/login";
     }
 
+    @GetMapping("/logged_in_home_staff")
+    public String loggedInStaff() {
+        return "/admin/logged_in_home_staff";
+    }
+
     @GetMapping("/forum")
     public String showAdminForumForm(Model model) {
         model.addAttribute("forum", new Forum());
