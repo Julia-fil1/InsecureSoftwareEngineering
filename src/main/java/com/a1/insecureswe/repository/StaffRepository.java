@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
-    @Query("SELECT s FROM staff s WHERE s.username = :username and s.password = :password")
-    public Staff findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+//    @Query("SELECT s FROM staff s WHERE s.username = :username and s.password = :password")
+//    public Staff findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    Staff findByUsername(String username);
 }

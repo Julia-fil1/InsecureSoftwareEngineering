@@ -19,8 +19,9 @@ public class UserInfo implements User{
     @Column
     private String password;
 
-    @Column
-    private final Boolean isAdmin = false;
+    private String role;
+
+    private int enabled;
 
     @Column
     private String name;
@@ -72,8 +73,20 @@ public class UserInfo implements User{
         this.password = password;
     }
 
-    public Boolean getAdmin() {
-        return isAdmin;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     public String getName() {

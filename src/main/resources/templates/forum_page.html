@@ -8,14 +8,13 @@
     <div>
         <h1>FAQs Page</h1>
     </div>
-    <form th:action="@{/process_question}" th:object="${forum}"
+    <form th:action="@{/admin/process_question}" th:object="${forum}"
           method="post" style="max-width: 600px; margin: 0 auto;">
-        <div class="m-1">
-
+        <div>
             <!--   Question Field   -->
             <div class="form-group row">
                 <label class="col-lg-12 col-form-label">Post A Question: </label>
-                <div class="col-lg-12">
+                <div class="col-lg">
                     <textarea type="text" th:field="*{question}" class="form-control"/>
                 </div>
             </div>
@@ -23,22 +22,21 @@
             <div>
                 <button type="submit" class="btn btn-primary">Post</button>
             </div>
-
-            <div class="col-lg-12">
-                <caption><h2>Discussion Board</h2></caption>
-                <table border="1" cellpadding="5">
-                    <tr>
-                        <th>Question</th>
-                        <th>Answer</th>
-                    </tr>
-                    <tr th:each = "post: ${listForum}">
-                        <td th:text="${post.question}" /></td>
-                        <td th:text="${post.answer}" /></td>
-                    </tr>
-                </table>
-            </div>
         </div>
     </form>
+    <div>
+        <caption><h2 class="forumTableTitle">Discussion Board</h2></caption>
+        <table class="forumTable">
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+            <tr th:each = "post: ${listForum}">
+                <td th:text="${post.question}" /></td>
+                <td th:text="${post.answer}" /></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 </body>

@@ -2,9 +2,9 @@ package com.a1.insecureswe.model;
 
 import javax.persistence.*;
 
-@Entity(name = "staff")
-@Table(name = "staff")
-public class Staff implements User {
+@Entity(name = "all_users")
+@Table(name = "all_users")
+public class AllUsers implements User{
     @Id
     @GeneratedValue
     private Long id;
@@ -19,15 +19,14 @@ public class Staff implements User {
 
     private int enabled;
 
-    public Staff(String username, String password, String role, int enabled) {
+    public AllUsers(String username, String password, String role, int enabled) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.enabled = enabled;
     }
 
-    public Staff() {
-
+    public AllUsers() {
     }
 
     public Long getId() {
@@ -56,12 +55,13 @@ public class Staff implements User {
         this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
+    @Override
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
