@@ -25,7 +25,7 @@ public class StaffController {
     public String viewAdminPage(Model model){
         List<UserInfo> listUsers = userInfoRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-        return "admin_page.html";
+        return "/admin/admin_page.html";
     }
 
     @GetMapping("login")
