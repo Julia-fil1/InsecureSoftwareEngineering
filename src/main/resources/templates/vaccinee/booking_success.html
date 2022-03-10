@@ -7,24 +7,25 @@
     <div>
         <h3>Appointment Confirmed.</h3>
         <!--Might display details of appointment when confirming booking-->
-        <!--<h4>Details:</h4>
+        <h4>Details:</h4>
         <table id="appTable">
             <thead>
             <tr>
-&lt;!&ndash;                <th><strong>Name</strong></th>&ndash;&gt;
                 <th><strong>Date</strong></th>
                 <th><strong>Time</strong></th>
                 <th><strong>Location</strong></th>
+                <th><strong>Vaccine Type</strong></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:object="appointment">
+            <tr th:object="${appointment}">
                 <td th:text="${appointment.appointmentDate}"></td>
                 <td th:text="${appointment.appointmentTime}"></td>
-                <td th:text="${appointment.appointmentLocation}"></td>
+                <td th:text="${appointment.location}"></td>
+                <td th:text="${appointment.vaccineType}"></td>
             </tr>
             </tbody>
-        </table>-->
+        </table>
 
         <br>
         <br>

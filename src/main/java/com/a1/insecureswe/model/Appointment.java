@@ -24,16 +24,20 @@ public class Appointment {
     @Column
     private String location;
 
+    @Column
+    private String vaccineType;
+
     public Appointment() {
         super();
     }
 
-    public Appointment(Long id, LocalDate date, LocalTime time, String location) {
+    public Appointment(Long id, LocalDate date, LocalTime time, String location, String vaccineType) {
         super();
         this.id = id;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
+        this.vaccineType = vaccineType;
     }
 
     public Long getId() {
@@ -66,5 +70,13 @@ public class Appointment {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getVaccineType() {
+        return vaccineType;
+    }
+
+    public void setVaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
     }
 }
