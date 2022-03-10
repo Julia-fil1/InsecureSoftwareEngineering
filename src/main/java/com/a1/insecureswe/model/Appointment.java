@@ -14,15 +14,6 @@ public class Appointment {
     private Long id;
 
     @Column
-    private Long userId;
-
-    /*@Column
-    private String name;
-
-    @Column
-    private String surname;*/
-
-    @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
 
@@ -33,17 +24,20 @@ public class Appointment {
     @Column
     private String location;
 
+    @Column
+    private String vaccineType;
+
     public Appointment() {
         super();
     }
 
-    public Appointment(Long id, Long userId, LocalDate date, LocalTime time, String location) {
+    public Appointment(Long id, LocalDate date, LocalTime time, String location, String vaccineType) {
         super();
         this.id = id;
-        this.userId = userId;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
+        this.vaccineType = vaccineType;
     }
 
     public Long getId() {
@@ -53,30 +47,6 @@ public class Appointment {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    /*public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }*/
 
     public LocalDate getAppointmentDate() {
         return appointmentDate;
@@ -100,5 +70,13 @@ public class Appointment {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getVaccineType() {
+        return vaccineType;
+    }
+
+    public void setVaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
     }
 }
