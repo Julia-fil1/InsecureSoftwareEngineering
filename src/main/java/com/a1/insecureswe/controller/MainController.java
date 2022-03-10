@@ -3,6 +3,7 @@ package com.a1.insecureswe.controller;
 import com.a1.insecureswe.model.*;
 import com.a1.insecureswe.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,6 @@ import java.util.List;
 
 @Controller
 public class MainController {
-    @RequestMapping({"/"})
-    public String viewHomePage(Model model){
-        return "home_page.html";
-    }
 
     @Autowired
     private UserInfoRepository userInfoRepository;
@@ -28,6 +25,21 @@ public class MainController {
 
     @Autowired
     private ForumRepository forumRepository;
+
+    @RequestMapping({"/"})
+    public String viewHomePage(Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(principal.toString().contains("VACCINEE")) {
+            return "redirect:/vaccinee/logged_in_home";
+
+        } else if(principal.toString().contains("ADMIN")) {
+            return "redirect:/admin/logged_in_home_staff";
+        } else{
+            System.out.println(principal.toString());
+            return "home_page.html";
+        }
+    }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -50,30 +62,6 @@ public class MainController {
     public String login() {
         return "login.html";
     }
-
-//    @PostMapping(value = "/login")
-//    public String log(User loggingUser) {
-//        UserInfo user = userInfoRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
-//        Staff staff = staffRepository.findByUsernameAndPassword(loggingUser.getUsername(), loggingUser.getPassword());
-//
-//        if(user == null && staff == null)
-//            return "redirect:login";
-//        else if(staff != null) {
-//            return "redirect:logged_in_home_staff";
-//        }
-//        else
-//            return "redirect:logged_in_home";
-//    }
-//
-//    @GetMapping("/logged_in_home")
-//    public String loggedIn() {
-//        return "logged_in_home.html";
-//    }
-//
-//    @GetMapping("/logged_in_home_staff")
-//    public String loggedInStaff() {
-//        return "logged_in_home_staff.html";
-//    }
 
     @GetMapping("/forum")
     public String showForumForm(Model model) {
