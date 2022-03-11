@@ -79,4 +79,13 @@ public class Appointment {
     public void setVaccineType(String vaccineType) {
         this.vaccineType = vaccineType;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id +
+                ", Date: " + appointmentDate +
+                ", Time: " + appointmentTime +
+                ", Location: " + location +
+                ", Vaccine type: " + vaccineType;
+    }
 }
