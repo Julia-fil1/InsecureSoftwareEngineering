@@ -65,4 +65,24 @@ public class StaffController {
         this.forumRepository.save(forum1);
         return "redirect:forum";
     }
+
+    @GetMapping("/edit_user/{id}")
+    public String editUser(@PathVariable("id") Long id, Model model) {
+        List<UserInfo> listUsers = userInfoRepository.findAll();
+
+        for (UserInfo u : listUsers) {
+            if (u.getId().equals(id)) {
+                model.addAttribute("user", u);
+            }
+        }
+        return "admin/edit_user";
+    }
+
+    @PostMapping("/edit_user")
+    public String update(UserInfo userInfo, @RequestParam int doseNumber) {
+        //needs fixing
+//        userInfo.setDoseNumber(doseNumber);
+//        userInfoRepository.save(userInfo);
+        return "admin/edit_user_success";
+    }
 }

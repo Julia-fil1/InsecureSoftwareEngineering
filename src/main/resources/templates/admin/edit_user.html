@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/admin/logged_in_home_staff :: head}"></head>
+<body>
+<nav th:replace="/admin/logged_in_home_staff :: navbar"></nav>
+
+<h1>Edit User Details</h1>
+
+<div>
+    <form th:action="@{/admin/edit_user}" th:object="${user}" method="post">
+        <table>
+            <tr>
+                <td style="padding: 5px">ID:</td>
+                <td style="padding: 5px" th:text="*{id}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Name:</td>
+                <td style="padding: 5px" th:text="*{name}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Surname:</td>
+                <td style="padding: 5px" th:text="*{surname}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Nationality:</td>
+                <td style="padding: 5px" th:text="*{nationality}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">DOB:</td>
+                <td style="padding: 5px" th:text="*{dob}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px"><label for="dose">Dose number:</label></td>
+                <!--                <td style="padding: 5px" th:text="${user.doseNumber}"></td>-->
+                <td>
+                    <select name="dose" id="dose" th:field="*{doseNumber}" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Address:</td>
+                <td style="padding: 5px" th:text="*{address}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Email:</td>
+                <td style="padding: 5px" th:text="*{email}"></td>
+            </tr>
+            <tr></tr>
+
+        </table>
+        <div>
+            <button type="submit" class="btn btn-primary">Submit change</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

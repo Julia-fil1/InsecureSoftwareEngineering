@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-
 import java.util.List;
 
 @Entity(name = "vaccinees")
@@ -55,6 +54,8 @@ public class UserInfo implements User{
     @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private List<Appointment> appointments;
+
+    private int doseNumber;
 
     public Long getId() {
         return id;
@@ -177,4 +178,12 @@ public class UserInfo implements User{
     public Boolean getIsNewUser() { return isNewUser; }
 
     public void  setIsNewUser(boolean isNewUser) { this.isNewUser = isNewUser; }
+
+    public int getDoseNumber() {
+        return doseNumber;
+    }
+
+    public void setDoseNumber(int doseNumber) {
+        this.doseNumber = doseNumber;
+    }
 }
