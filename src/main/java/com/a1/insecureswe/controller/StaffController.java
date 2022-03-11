@@ -9,9 +9,6 @@ import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -86,7 +83,7 @@ public class StaffController {
     }
 
     @PostMapping("/edit_user")
-    public String update(UserInfo userInfo, @RequestParam int doseNumber, Model model) throws UserNotFoundException {
+    public String update(UserInfo userInfo, @RequestParam int doseNumber) throws UserNotFoundException {
         // System.out.println("id " + userInfo.getId());
 
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
@@ -94,7 +91,6 @@ public class StaffController {
         user.setDoseNumber(doseNumber);
         if(doseNumber == 1 && user.getAppointments().size() == 1) {
             // If the user has booked an appointment before, book it 3 weeks later in the same place
-            // Could cause clashes...
             Appointment nextAppointment = new Appointment();
             nextAppointment.setAppointmentDate(user.getLatestVaccinationDate().plusWeeks(3));
             nextAppointment.setLocation(user.getAppointments().get(0).getLocation());
@@ -125,6 +121,8 @@ public class StaffController {
         a.setVaccineType(app.getVaccineType());
         this.appointmentRepository.save(a);
         return "admin/edit_user_success";
+    }
+
     private String findTime(Appointment nextAppointment, UserInfo user) {
         List<String> takenTimes = appointmentRepository.findTakenTimesFor(nextAppointment.getLocation(), nextAppointment.getAppointmentDate());
         ArrayList<String> times = new ArrayList<>(Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"));
@@ -139,12 +137,12 @@ public class StaffController {
         }
     }
 
-    @RequestMapping({"/appointments"})
+    /*@RequestMapping({"/appointments"})
     public String viewAppointmentPage(Model model){
         List<Appointment> listappoints = appointmentRepository.findAll();
         model.addAttribute("listappoints", listappoints);
         return "/admin/admin_appointments_page.html";
-    }
+    }*/
 
     @GetMapping("/logged_in_home_staff")
     public String loggedInStaff(Model model) {
