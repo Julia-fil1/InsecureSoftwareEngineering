@@ -108,8 +108,6 @@ public class VaccineeController {
         currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
-        //currentUser.setIsNewUser(false);
-        //setHistory(currentUser.getIsNewUser());
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";
     }
@@ -129,8 +127,26 @@ public class VaccineeController {
 
     @RequestMapping({"/history"})
     public String history(Model model) throws HistoryNotFoundException {
-        List<Appointment> listApp = appointmentRepository.findAll();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserInfo currentUser;
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        currentUser = userInfoRepository.findByUsername(username);
+
+        List<Appointment> listApp = currentUser.getAppointments();
         model.addAttribute("listApp", listApp);
-        return "/vaccinee/history.html";
+
+        if(listApp != null) {
+            return "/vaccinee/history.html";
+        } else {
+            return "redirect:/vaccinee/history_clean.html";
+        }
+        //return "/vaccinee/history.html";
     }
 }

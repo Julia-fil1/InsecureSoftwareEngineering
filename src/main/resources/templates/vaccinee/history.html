@@ -6,22 +6,24 @@
 
     <div class="container text-center">
         <div>
-            <h1>User History</h1>
+            <h1>Vaccine History</h1>
         </div>
         <div align="center">
-            <table border="1" cellpadding="5">
+            <table border="5" cellpadding="10">
+                <tbody th:each="app: ${listApp}">
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Location</th>
                     <th>Vaccine Type</th>
                 </tr>
-                <tr th:each="post: ${listApp}">
-                    <td th:text="post: ${post.date}"></td>
-                    <td th:text="post: ${post.time}"></td>
-                    <td th:text="post: ${post.location}"></td>
-                    <td th:text="post: ${post.vaccineType}"></td>
+                <tr>
+                    <td th:text="${app.appointmentDate}"></td>
+                    <td th:text="${app.appointmentTime}"></td>
+                    <td th:text="${app.location}"></td>
+                    <td th:text="${app.vaccineType}"></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>

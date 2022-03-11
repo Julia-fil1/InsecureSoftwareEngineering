@@ -10,8 +10,6 @@ import java.util.List;
 @Entity(name = "vaccinees")
 @Table(name = "vaccinees")
 public class UserInfo implements User{
-    private boolean isNewUser;
-
     @Id
     @GeneratedValue
     private Long id;
@@ -174,10 +172,6 @@ public class UserInfo implements User{
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
-
-    public Boolean getIsNewUser() { return isNewUser; }
-
-    public void  setIsNewUser(boolean isNewUser) { this.isNewUser = isNewUser; }
 
     public int getDoseNumber() {
         return doseNumber;
