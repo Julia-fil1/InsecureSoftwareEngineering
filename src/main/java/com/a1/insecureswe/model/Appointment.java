@@ -18,8 +18,8 @@ public class Appointment {
     private LocalDate appointmentDate;
 
     @Column
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime appointmentTime;
+    //@DateTimeFormat(pattern = "HH:mm")
+    private String appointmentTime;
 
     @Column
     private String location;
@@ -31,7 +31,7 @@ public class Appointment {
         super();
     }
 
-    public Appointment(Long id, LocalDate date, LocalTime time, String location, String vaccineType) {
+    public Appointment(Long id, LocalDate date, String time, String location, String vaccineType) {
         super();
         this.id = id;
         this.appointmentDate = date;
@@ -56,11 +56,11 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
     }
 
-    public LocalTime getAppointmentTime() {
+    public String getAppointmentTime() {
         return appointmentTime;
     }
 
-    public void setAppointmentTime(LocalTime appointmentTime) {
+    public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 

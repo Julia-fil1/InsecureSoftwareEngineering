@@ -1,16 +1,11 @@
 package com.a1.insecureswe.controller;
 
 import com.a1.insecureswe.exception.HistoryNotFoundException;
-import com.a1.insecureswe.model.Forum;
-import com.a1.insecureswe.model.User;
-import com.a1.insecureswe.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.a1.insecureswe.exception.AppointmentTakenException;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,35 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("vaccinee")
 public class VaccineeController {
-//    @Autowired
-//    private ForumRepository forumRepository;
-//
-//    @GetMapping("/forum")
-//    public String showForumForm(Model model) {
-//        model.addAttribute("forum", new Forum());
-//        List<Forum> listForum = forumRepository.findAll();
-//        model.addAttribute("listForum", listForum);
-//        return "/vaccinee/forum_page";
-//    }
-//
-//    @PostMapping("/process_question")
-//    public String processQuestion(Forum forum) {
-//        this.forumRepository.save(forum);
-//        return "redirect:forum";
-//    }
-
     @Autowired
     AppointmentRepository appointmentRepository;
 
@@ -55,37 +29,8 @@ public class VaccineeController {
     UserInfoRepository userInfoRepository;
 
     @PostMapping("/set_appointment")
-    public String saveAppointment(Model model, Appointment appointment) throws AppointmentTakenException {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserInfo currentUser;
-        String username;
-
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        currentUser = userInfoRepository.findByUsername(username);
-
-        // Check to ensure user can't have more than 2 appointments (fully vaccinated)
-        /*if(currentUser.getAppointments().size() == 2) {
-            //return "vaccinee/alreadyBooked.html";
-        } else if(currentUser.getAppointments().size() == 1) {
-            if (currentUser.getAppointments().get(0).getAppointmentDate().plusWeeks(4).isAfter(appointment.getAppointmentDate())) {
-                // Add something to prevent 2 appointments being within 4 weeks of each other
-            } else if (appointment.getVaccineType().equals("Janssen")) {
-                // Janssen only needs 1 appointment/dose
-            }
-        }*/
-
-        // Check to make sure selected date & time aren't already taken at the selected location
-        List<Appointment> appointments = appointmentRepository.findAll();
-        for (Appointment app : appointments) {
-            if (app.getAppointmentDate().isEqual(appointment.getAppointmentDate()) && app.getAppointmentTime().equals(appointment.getAppointmentTime()) && app.getLocation().equals(appointment.getLocation())) {
-                throw new AppointmentTakenException(app.getAppointmentDate());
-            }
-        }
+    public String saveAppointment(Model model, Appointment appointment) {
+        UserInfo currentUser = getCurrentUser();
 
         // Adding appointment to user's list/history
         List<Appointment> userAppointments = currentUser.getAppointments();
@@ -93,20 +38,101 @@ public class VaccineeController {
         currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
+        if (currentUser.getAppointments().size() == 1) {
+            currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
+        }
+        userInfoRepository.save(currentUser);
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";
     }
 
     @GetMapping("/book_appointment")
-    public String createAppointment(Model model) {
-        model.addAttribute("appointment", new Appointment());
+    public String checkAvailability(Model model) {
+        UserInfo currentUser = getCurrentUser();
 
-        // Setting earliest time/date of appointment to be 09:00 tomorrow
-        // Last appointment allowed at 21:00 for working people throughout the week
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
-        LocalDate maxDate = tomorrow.plusMonths(6);
-        model.addAttribute("tomorrow", tomorrow);
+        // If the user has booked an appointment but hasn't received that dose yet, they can't book another appointment yet
+        if(currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 0) {
+            if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
+                return "vaccinee/alreadyBooked.html";
+            }
+        } else if (currentUser.getDoseNumber() == 2) {
+            return "vaccinee/fullyVaccinated.html";
+        }
+
+        // Currently if currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 1, even if that's for a 2nd app, it lets
+        // you book infinite appointments...
+
+        Appointment appointment = new Appointment();
+        model.addAttribute("appointment", appointment);
+
+        LocalDate minDate;
+        if(currentUser.getDoseNumber() == 1) {
+            if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(2)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(1))) {
+                minDate = LocalDate.now().plusWeeks(1);
+            } else if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(1)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(2))) {
+                minDate = LocalDate.now().plusWeeks(2);
+            } else {
+                minDate = currentUser.getLatestVaccinationDate().plusWeeks(1); //Check this
+            }
+        } else {
+            minDate = LocalDate.now().plusDays(1);
+        }
+
+        LocalDate maxDate = minDate.plusMonths(6);
+        model.addAttribute("tomorrow", minDate);
         model.addAttribute("maxDate", maxDate);
+        return "vaccinee/checkForAvailability.html";
+    }
+
+    @PostMapping("/check_availability")
+    public String createAppointment(Model model, Appointment appointment) {
+        List<String> takenTimes = appointmentRepository.findTakenTimesFor(appointment.getLocation(), appointment.getAppointmentDate());
+
+        // Removing taken time slots
+        ArrayList<String> times = new ArrayList<>(Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"));
+        if (!takenTimes.isEmpty()) {
+            times.removeAll(takenTimes);
+        }
+        /*List<Appointment> apps = appointmentRepository.findTakenTimesFor("UCD");
+        List<String> takenTimes = new ArrayList<>();
+        for (Appointment appointment : apps) {
+            takenTimes.add(appointment.getAppointmentTime());
+        }
+        model.addAttribute("takenUCDTimes", takenTimes);
+
+        apps.clear();
+        apps = appointmentRepository.findTakenTimesFor("DCU");
+        takenTimes.clear();
+        for (Appointment appointment : apps) {
+            takenTimes.add(appointment.getAppointmentTime());
+        }
+        model.addAttribute("takenDCUTimes", takenTimes);
+
+        apps.clear();
+        apps = appointmentRepository.findTakenTimesFor("Ongar");
+        takenTimes.clear();
+        for (Appointment appointment : apps) {
+            takenTimes.add(appointment.getAppointmentTime());
+        }
+        model.addAttribute("takenOngarTimes", takenTimes);
+
+        apps.clear();
+        apps = appointmentRepository.findTakenTimesFor("Citywest");
+        takenTimes.clear();
+        for (Appointment appointment : apps) {
+            takenTimes.add(appointment.getAppointmentTime());
+        }
+        model.addAttribute("takenCitywestTimes", takenTimes);*/
+
+        model.addAttribute("timesAvailable", times);
+        model.addAttribute("appointment", appointment);
+
+        // When do we get info on their last vaccination? -- Admin updates?
+        // Do I need to store the date of the last vaccination?
+        // To ensure they can't book 2 appointments -- check if 1st app date is before now
+        // Diary needs to be done
+        // Styling needs to be done
+
         return "/vaccinee/book_appointment";
     }
 
@@ -216,5 +242,17 @@ public class VaccineeController {
         model.addAttribute("totalAge65Plus", totalAge65Plus);
 
         return "/vaccinee/logged_in_home";
+    }
+
+    private UserInfo getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username;
+        if(principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return userInfoRepository.findByUsername(username);
     }
 }
