@@ -8,6 +8,8 @@ import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +71,7 @@ public class StaffController {
     @PostMapping("/edit_user")
     public String update(UserInfo userInfo, @RequestParam int doseNumber) throws UserNotFoundException {
         System.out.println("id " + userInfo.getId());
+
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
         user.setDoseNumber(doseNumber);
         userInfoRepository.save(user);
