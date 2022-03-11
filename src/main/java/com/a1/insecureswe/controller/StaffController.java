@@ -1,15 +1,19 @@
 package com.a1.insecureswe.controller;
 
 import com.a1.insecureswe.exception.QuestionNotFoundException;
+import com.a1.insecureswe.exception.UserNotFoundException;
+import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.Forum;
 import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -73,16 +77,18 @@ public class StaffController {
         for (UserInfo u : listUsers) {
             if (u.getId().equals(id)) {
                 model.addAttribute("user", u);
+                System.out.println("user:" + u.getId());
             }
         }
         return "admin/edit_user";
     }
 
     @PostMapping("/edit_user")
-    public String update(UserInfo userInfo, @RequestParam int doseNumber) {
-        //needs fixing
-//        userInfo.setDoseNumber(doseNumber);
-//        userInfoRepository.save(userInfo);
+    public String update(UserInfo userInfo, @RequestParam int doseNumber) throws UserNotFoundException {
+        System.out.println("id " + userInfo.getId());
+        UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
+        user.setDoseNumber(doseNumber);
+        userInfoRepository.save(user);
         return "admin/edit_user_success";
     }
 }

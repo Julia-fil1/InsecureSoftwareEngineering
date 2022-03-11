@@ -18,6 +18,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     Long findTotalIrish();
 
 
-    @Override
-    Optional<UserInfo> findById(Long aLong);
+//    @Override
+//    Optional<UserInfo> findById(Long aLong);
 }
