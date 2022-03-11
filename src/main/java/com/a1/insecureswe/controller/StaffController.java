@@ -68,9 +68,20 @@ public class StaffController {
         for (UserInfo u : listUsers) {
             if (u.getId().equals(id)) {
                 model.addAttribute("user", u);
-                // System.out.println("user:" + u.getId());
+
+                UserInfo editingUser = u;
+                if(editingUser.getAppointments().isEmpty()){
+                    model.addAttribute("listApp", null);
+                }else{
+                    List<Appointment> listApp = editingUser.getAppointments();
+
+                    for (Appointment l : listApp) {
+                        model.addAttribute("listApp", l);
+                    }
+                }
             }
         }
+
         return "admin/edit_user";
     }
 
@@ -108,6 +119,12 @@ public class StaffController {
         return "admin/edit_user_success";
     }
 
+    @PostMapping("/edit_vaccine_type")
+    public String changeType(Appointment app) throws QuestionNotFoundException {
+        Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new QuestionNotFoundException(app.getId()));
+        a.setVaccineType(app.getVaccineType());
+        this.appointmentRepository.save(a);
+        return "admin/edit_user_success";
     private String findTime(Appointment nextAppointment, UserInfo user) {
         List<String> takenTimes = appointmentRepository.findTakenTimesFor(nextAppointment.getLocation(), nextAppointment.getAppointmentDate());
         ArrayList<String> times = new ArrayList<>(Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"));
