@@ -13,14 +13,21 @@ li {
     list-style: none;
 }
 /* -------------------------------HOMEPAGE IMAGE AND STATS STYLING------------------------------- */
-.float-container {
-    padding: 1px;
+#wrapper {
+    display: flex;
 }
 
-.float-child {
-    width: 50%;
-    float: left;
-    padding: 1px;
+#left {
+    flex: 0 0 50%;
+}
+
+#right {
+    flex: 1;
+}
+
+img {
+    width: 100%;
+    height: auto;
 }
 /* -------------------------------NAVBAR STYLING------------------------------- */
 .navbar {
