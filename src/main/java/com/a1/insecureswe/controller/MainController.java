@@ -30,6 +30,18 @@ public class MainController {
     public String viewHomePage(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        //      Retrieves entire userInfo DB
+        List<UserInfo> listUsers = userInfoRepository.findAll();
+        model.addAttribute("listUsers", listUsers);
+
+        //      Gets total count of users
+        long totalUserCount = listUsers.toArray().length;
+        model.addAttribute("totalUserCount", totalUserCount);
+
+        //      Gets total count of Irish
+        long totalIrish = userInfoRepository.findTotalIrish();
+        model.addAttribute("totalIrish", totalIrish);
+
         if(principal.toString().contains("VACCINEE")) {
             return "redirect:/vaccinee/logged_in_home";
 
