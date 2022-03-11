@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{home_page :: head}"></head>
+<head th:replace="~{/admin/logged_in_home_staff :: head}"></head>
 <body>
-<nav th:replace="home_page :: navbar"> </nav>
+<nav th:replace="/admin/logged_in_home_staff :: navbar"> </nav>
 
 <div class="container text-center">
     <div>

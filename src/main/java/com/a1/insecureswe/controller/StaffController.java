@@ -25,12 +25,17 @@ public class StaffController {
     public String viewAdminPage(Model model){
         List<UserInfo> listUsers = userInfoRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-        return "admin_page.html";
+        return "/admin/admin_page.html";
     }
 
     @GetMapping("login")
     public String login() {
         return "admin/login";
+    }
+
+    @GetMapping("/logged_in_home_staff")
+    public String loggedInStaff() {
+        return "/admin/logged_in_home_staff";
     }
 
     @GetMapping("/forum")

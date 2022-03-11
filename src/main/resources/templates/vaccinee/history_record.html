@@ -1,24 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{home_page :: head}"></head>
+<head th:replace="~{/vaccinee/logged_in_home :: head}"></head>
 <body>
-<nav th:fragment="navbar" class="navbar" >
-    <!-- LOGO -->
-    <div class="logo">InsecureSWE</div>
-    <!-- NAVIGATION MENU -->
-    <ul class="nav-links">
-        <!-- NAVIGATION MENUS -->
-        <div class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/">Forum</a></li>
-            <li><a href="/book">Bookings</a></li>
-            <li><a href="/history">History</a></li>
-            <li><a href="/statistics">Statistics</a></li>
-            <li><a href="/register">Signup</a></li>
-            <li><a href="/login">Logout</a></li>
-        </div>
-    </ul>
-</nav>
+<nav th:replace="/vaccinee/logged_in_home :: navbar"> </nav>
 
     <div class="container text-center">
         <div>
