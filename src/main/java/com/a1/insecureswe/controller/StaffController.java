@@ -75,10 +75,12 @@ public class StaffController {
     }
 
     @PostMapping("/edit_user")
-    public String update(UserInfo userInfo, @RequestParam int doseNumber) throws UserNotFoundException {
+    public String update(UserInfo userInfo, @RequestParam int doseNumber, Model model) throws UserNotFoundException {
         // System.out.println("id " + userInfo.getId());
 
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
+
+        user.setDoseNumber(doseNumber);
         if(doseNumber == 1 && user.getAppointments().size() == 1) {
             // If the user has booked an appointment before, book it 3 weeks later in the same place
             // Could cause clashes...
@@ -96,23 +98,12 @@ public class StaffController {
             List<Appointment> userAppointments = user.getAppointments();
             userAppointments.add(nextAppointment);
             user.setAppointments(userAppointments);
+            userInfoRepository.save(user);
 
         } else if (doseNumber == 1 && user.getAppointments().size() == 0) {
-            Appointment nextAppointment = new Appointment();
-            nextAppointment.setAppointmentDate(LocalDate.now().plusWeeks(3));
-            // Book the earliest available slot 3 weeks from now
-            nextAppointment.setAppointmentTime(findTime(nextAppointment, user));
-
-            //nextAppointment.setLocation(user.getAppointments().get(0).getLocation());
-            //nextAppointment.setVaccineType(user.getAppointments().get(0).getVaccineType());
-            appointmentRepository.save(nextAppointment);
-
-            List<Appointment> userAppointments = user.getAppointments();
-            userAppointments.add(nextAppointment);
-            user.setAppointments(userAppointments);
+            user.setLatestVaccinationDate(LocalDate.now());
+            userInfoRepository.save(user);
         }
-        user.setDoseNumber(doseNumber);
-        userInfoRepository.save(user);
 
         return "admin/edit_user_success";
     }
@@ -137,15 +128,6 @@ public class StaffController {
         model.addAttribute("listappoints", listappoints);
         return "/admin/admin_appointments_page.html";
     }
-
-//    @PostMapping("/change_vaccine")
-//    public String processQuestion(Appointment app) throws QuestionNotFoundException {
-////        need to make exception
-//        Appointment app_1 = appointmentRepository.findById(app.getId()).orElseThrow(()-> new QuestionNotFoundException(app.getId()));
-//        app_1.setVaccineType(app_1.getVaccineType());
-//        this.appointmentRepository.save(app_1);
-//        return "redirect:appointments";
-//    }
 
     @GetMapping("/logged_in_home_staff")
     public String loggedInStaff(Model model) {
