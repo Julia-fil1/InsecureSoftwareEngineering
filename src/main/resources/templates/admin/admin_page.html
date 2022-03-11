@@ -1,42 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/admin/logged_in_home_staff :: head}"></head>
 <body>
-    <nav th:replace="/admin/logged_in_home_staff :: navbar"> </nav>
+<nav th:replace="/admin/logged_in_home_staff :: navbar"></nav>
 
-    <center>
-        <h1>TEST HEADING</h1>
-    </center>
-    <div align="center">
-        <table border="1" cellpadding="5">
-            <caption><h2>TEST CAPTION</h2></caption>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>SureName</th>
-                <th>Nationality</th>
-                <th>DOB</th>
-<!--                <th>PPS Number</th>-->
-                <th>Address</th>
-<!--                <th>Phone</th>-->
-                <th>Email</th>
-                <th>UserName</th>
-                <th>Password</th>
-            </tr>
-            <tr th:each = "user: ${listUsers}">
-                <td th:text="${user.id}" /></td>
-                <td th:text="${user.name}" /></td>
-                <td th:text="${user.surname}" /></td>
-                <td th:text="${user.nationality}" /></td>
-                <td th:text="${user.dob}" /></td>
-<!--                <td th:text="${user.pps_number}" /></td>-->
-                <td th:text="${user.address}" /></td>
-<!--                <td th:text="${user.phone_number}" /></td>-->
-                <td th:text="${user.email}" /></td>
-                <td th:text="${user.username}" /></td>
-                <td th:text="${user.password}" /></td>
-            </tr>
-        </table>
-    </div>
+<h1>Registered Users</h1>
+
+<div>
+    <table>
+        <tbody th:each="user: ${listUsers}">
+        <tr>
+            <td style="padding: 5px" th:text="${user.id}"></td>
+            <td style="padding: 5px" th:text="${user.name}"></td>
+            <td style="padding: 5px" th:text="${user.surname}"></td>
+            <td style="padding: 5px"><a th:href="@{/admin/edit_user/{id}(id=${user.id})}">Edit User</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
