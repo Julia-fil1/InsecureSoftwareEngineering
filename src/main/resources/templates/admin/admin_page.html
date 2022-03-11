@@ -13,7 +13,7 @@
             <td style="padding: 5px" th:text="${user.id}"></td>
             <td style="padding: 5px" th:text="${user.name}"></td>
             <td style="padding: 5px" th:text="${user.surname}"></td>
-            <td style="padding: 5px"><a th:href="@{/admin/edit_user/{id}(id=${user.id})}">Edit User</a></td>
+            <td style="padding: 5px"><a th:href="@{/admin/edit_user/{id}(id=${user.id})}" class="btn btn-primary">Edit User</a></td>
         </tr>
         </tbody>
     </table>

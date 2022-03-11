@@ -1,6 +1,5 @@
 package com.a1.insecureswe.controller;
 
-import com.a1.insecureswe.exception.HistoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.UserInfo;
@@ -139,35 +138,18 @@ public class VaccineeController {
         return "/vaccinee/book_appointment";
     }
 
-    @RequestMapping({"/history"})
-    public String history(Model model) throws HistoryNotFoundException {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserInfo currentUser;
-        String username;
-
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        currentUser = userInfoRepository.findByUsername(username);
-
+    @GetMapping("/history")
+    public String history(Model model) {
+        UserInfo currentUser = getCurrentUser();
         List<Appointment> listApp = currentUser.getAppointments();
         model.addAttribute("listApp", listApp);
 
-//        if(listApp != null) {
-//            return "/vaccinee/history.html";
-//        } else {
-//            return "redirect:history_clean";
-//        }
-        return "/vaccinee/history.html";
+        if(listApp.isEmpty()) {
+            return "/vaccinee/history_clean";
+        } else {
+            return "/vaccinee/history.html";
+        }
     }
-
-//    @GetMapping("/history_clean")
-//    public String historyClean() {
-//        return "/vaccinee/history_clean.html";
-//    }
 
     @GetMapping("/logged_in_home")
     public String loggedIn(Model model) {

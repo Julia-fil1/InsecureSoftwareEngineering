@@ -183,7 +183,9 @@ public class UserInfo implements User{
     }
 
     public void setDoseNumber(int doseNumber) {
-        this.doseNumber = doseNumber;
+        if (doseNumber > this.doseNumber) {
+            this.doseNumber = doseNumber;
+        }
     }
 
     public LocalDate getLatestVaccinationDate() {
