@@ -26,6 +26,50 @@ public class MainController {
     @Autowired
     private ForumRepository forumRepository;
 
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new UserInfo());
+        return "signup_form.html";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(UserInfo user) {
+        String encoded = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encoded);
+        user.setRole("VACCINEE");
+        user.setEnabled(1);
+        this.userInfoRepository.save(user);
+        this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), 1));
+        return "register_success.html";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login.html";
+    }
+
+    @GetMapping("/forum")
+    public String showForumForm(Model model) {
+        model.addAttribute("forum", new Forum());
+        List<Forum> listForum = forumRepository.findAll();
+        model.addAttribute("listForum", listForum);
+        return "forum_page.html";
+    }
+
+    @PostMapping("/process_question")
+    public String processQuestion(Forum forum) {
+        this.forumRepository.save(forum);
+        return "redirect:forum";
+    }
+
+    @GetMapping("/history")
+    public String history() { return "history.html"; }
+
+    @GetMapping("/adminOnly")
+    public String only() {
+        return "adminOnly.html";
+    }
+
     @RequestMapping({"/"})
     public String viewHomePage(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -112,49 +156,5 @@ public class MainController {
             System.out.println(principal.toString());
             return "home_page.html";
         }
-    }
-
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new UserInfo());
-        return "signup_form.html";
-    }
-
-    @PostMapping("/process_register")
-    public String processRegister(UserInfo user) {
-        String encoded = new BCryptPasswordEncoder().encode(user.getPassword());
-        user.setPassword(encoded);
-        user.setRole("VACCINEE");
-        user.setEnabled(1);
-        this.userInfoRepository.save(user);
-        this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), 1));
-        return "register_success.html";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login.html";
-    }
-
-    @GetMapping("/forum")
-    public String showForumForm(Model model) {
-        model.addAttribute("forum", new Forum());
-        List<Forum> listForum = forumRepository.findAll();
-        model.addAttribute("listForum", listForum);
-        return "forum_page.html";
-    }
-
-    @PostMapping("/process_question")
-    public String processQuestion(Forum forum) {
-        this.forumRepository.save(forum);
-        return "redirect:forum";
-    }
-
-    @GetMapping("/history")
-    public String history() { return "history.html"; }
-
-    @GetMapping("/adminOnly")
-    public String only() {
-        return "adminOnly.html";
     }
 }
