@@ -4,79 +4,104 @@
 <body>
 <nav th:replace="/admin/logged_in_home_staff :: navbar"></nav>
 
-<h1>Edit User Details</h1>
+<div id="wrapper">
+    <div id="left">
+        <caption><h1 class="forumTableTitle">Edit User Details</h1></caption>
 
-<div>
-    <form th:action="@{/admin/edit_user}" th:object="${user}" method="post">
-        <table>
-            <tr>
-                <input style="display: none" type="text" th:field="*{id}" th:value="*{id}" class="form-control" readonly hidden/>
-                <td style="padding: 5px">ID:</td>
-                <td style="padding: 5px" th:text="*{id}"></td>
-            </tr>
-            <tr style="display: none">
-                <td style="padding: 5px">Username:</td>
-                <td style="padding: 5px" th:text="*{username}"></td>
-            </tr>
-            <tr style="display: none">
-                <td style="padding: 5px">Password:</td>
-                <td style="padding: 5px" th:text="*{password}"></td>
-            </tr>
-            <tr style="display: none">
-                <td style="padding: 5px">Role:</td>
-                <td style="padding: 5px" th:text="*{role}"></td>
-            </tr>
-            <tr style="display: none">
-                <td style="padding: 5px">Enabled:</td>
-                <td style="padding: 5px" th:text="*{enabled}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Name:</td>
-                <td style="padding: 5px" th:text="*{name}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Surname:</td>
-                <td style="padding: 5px" th:text="*{surname}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Nationality:</td>
-                <td style="padding: 5px" th:text="*{nationality}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">DOB:</td>
-                <td style="padding: 5px" th:text="*{dob}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Appointments:</td>
-                <td style="padding: 5px" th:text="*{appointments}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px"><label for="dose">Dose number:</label></td>
-                <!--                <td style="padding: 5px" th:text="${user.doseNumber}"></td>-->
-                <td>
-                    <select name="dose" id="dose" th:field="*{doseNumber}" required>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
+        <form th:action="@{/admin/edit_user}" th:object="${user}" method="post">
+            <table class="forumTable">
+                <tr>
+                    <input style="display: none" type="text" th:field="*{id}" th:value="*{id}" class="form-control" readonly hidden/>
+                    <td>ID:</td>
+                    <td th:text="*{id}"></td>
+                </tr>
+                <tr>
+                    <td>Username:</td>
+                    <td th:text="*{username}"></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td th:text="*{name}"></td>
+                </tr>
+                <tr>
+                    <td >Surname:</td>
+                    <td th:text="*{surname}"></td>
+                </tr>
+                <tr>
+                    <td>Nationality:</td>
+                    <td th:text="*{nationality}"></td>
+                </tr>
+                <tr>
+                    <td>DOB:</td>
+                    <td th:text="*{dob}"></td>
+                </tr>
+                <tr>
+                    <td>Appointments:</td>
+                    <td th:text="*{appointments}"></td>
+                </tr>
+                <tr>
+                    <td><label for="dose">Dose number:</label></td>
+                    <td>
+                        <select name="dose" id="dose" th:field="*{doseNumber}" required>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
 
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Address:</td>
-                <td style="padding: 5px" th:text="*{address}"></td>
-            </tr>
-            <tr>
-                <td style="padding: 5px">Email:</td>
-                <td style="padding: 5px" th:text="*{email}"></td>
-            </tr>
-            <tr></tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td th:text="*{address}"></td>
+                </tr>
+                <tr>
+                    <td >Email:</td>
+                    <td th:text="*{email}"></td>
+                </tr>
+                <tr></tr>
 
-        </table>
-        <div style="padding: 5px">
-            <button type="submit" class="btn btn-primary">Submit change</button>
-        </div>
-    </form>
+            </table>
+            <div style="padding: 5px">
+                <button type="submit" class="btn btn-primary">Submit change</button>
+            </div>
+        </form>
+    </div>
+    <div id="right">
+        <caption><h1 class="forumTableTitle">Edit Vaccine Type</h1></caption>
+        <form th:action="@{/admin/edit_vaccine_type}" th:object="${listApp}" method="post">
+            <table class="forumTable">
+                <div th:if= "${listApp != null}">
+                <tr>
+                    <input style="display: none" type="text" th:field="*{id}" th:value="*{id}" class="form-control" readonly hidden/>
+                    <td th:text="${listApp != null} ? 'ID: ' + *{id} : 'No Appointment'"></td>
+                </tr>
+                </div>
+                <tr>
+                    <td th:text="${listApp != null} ? 'Appointment Date: ' + *{appointmentDate} : 'No Appointment'"></td>
+                </tr>
+                <tr>
+                    <td th:text="${listApp != null} ? 'Appointment Time: ' + *{appointmentTime} : ''"></td>
+                </tr>
+                <tr>
+                    <td th:text="${listApp != null} ? 'Appointment Location: ' + *{location} : ''"></td>
+                </tr>
+                <tr>
+                    <td th:text="${listApp != null} ? 'Appointment Type: ' + *{vaccineType} : ''"></td>
+                </tr>
+            </table>
+            <div th:if= "${listApp != null}">
+                <select name="vaccineType" id="vaccineType" th:field="*{vaccineType}" required>
+                    <option value="Pfizer-BioNTech">Pfizer-BioNTech</option>
+                    <option value="Moderna">Moderna</option>
+                </select>
+            </div>
+            <div th:if= "${listApp != null}">
+                <button type="submit" class="btn btn-primary">Submit change</button>
+            </div>
+
+        </form>
+        <!--    <form th:action="@{/process_register}" th:object="${user}" method="post" style="max-width: 600px; margin: 0 auto;"></form>-->
+    </div>
 </div>
 </body>
 </html>
