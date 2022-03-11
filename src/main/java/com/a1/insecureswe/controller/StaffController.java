@@ -5,6 +5,7 @@ import com.a1.insecureswe.exception.UserNotFoundException;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.Forum;
 import com.a1.insecureswe.model.UserInfo;
+import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class StaffController {
 
     @Autowired
     private ForumRepository forumRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @RequestMapping({"/list"})
     public String viewAdminPage(Model model){
@@ -75,8 +79,25 @@ public class StaffController {
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
         user.setDoseNumber(doseNumber);
         userInfoRepository.save(user);
+
         return "admin/edit_user_success";
     }
+
+    @RequestMapping({"/appointments"})
+    public String viewAppointmentPage(Model model){
+        List<Appointment> listappoints = appointmentRepository.findAll();
+        model.addAttribute("listappoints", listappoints);
+        return "/admin/admin_appointments_page.html";
+    }
+
+//    @PostMapping("/change_vaccine")
+//    public String processQuestion(Appointment app) throws QuestionNotFoundException {
+////        need to make exception
+//        Appointment app_1 = appointmentRepository.findById(app.getId()).orElseThrow(()-> new QuestionNotFoundException(app.getId()));
+//        app_1.setVaccineType(app_1.getVaccineType());
+//        this.appointmentRepository.save(app_1);
+//        return "redirect:appointments";
+//    }
 
     @GetMapping("/logged_in_home_staff")
     public String loggedInStaff(Model model) {
