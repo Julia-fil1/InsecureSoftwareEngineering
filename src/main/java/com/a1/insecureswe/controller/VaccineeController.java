@@ -42,7 +42,7 @@ public class VaccineeController {
         if (currentUser.getAppointments().size() == 1) {
             currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
         } else if (currentUser.getAppointments().size() == 2) {
-            currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
+            currentUser.setLatestVaccinationDate(currentUser.getAppointments().get(1).getAppointmentDate());
         }
         userInfoRepository.save(currentUser);
 
@@ -55,12 +55,14 @@ public class VaccineeController {
         UserInfo currentUser = getCurrentUser();
 
         // If the user has booked an appointment but hasn't received that dose yet, they can't book another appointment yet
+        // Alternatively, if a user has had a dose before and then books their second appointment, they can't book another one after that
         if((currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 0) ||
                 (currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 1 && currentUser.getLatestVaccinationDate().isAfter(LocalDate.now()))) {
             if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
                 return "vaccinee/alreadyBooked.html";
             }
         } else if (currentUser.getDoseNumber() == 2) {
+            // If a user has had 2 doses, they're fully vaccinated and can't book another appointment
             return "vaccinee/fullyVaccinated.html";
         }
 
@@ -68,21 +70,27 @@ public class VaccineeController {
         model.addAttribute("appointment", appointment);
 
         LocalDate minDate;
+        // If the user is booking an appointment during the three weeks after the 1st dose, this statement will prevent them booking too close to the 1st dose
         if(currentUser.getDoseNumber() == 1 && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(3))) {
             if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(2)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(1))) {
+                // If it's been 2 weeks since the 1st dose, they can't book an appointment any earlier than a week after today
                 minDate = LocalDate.now().plusWeeks(1);
             } else if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(1)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(2))) {
+                // If it's been 1 weeks since the 1st dose, they can't book an appointment any earlier than 2 weeks after today
                 minDate = LocalDate.now().plusWeeks(2);
             } else {
+                // Otherwise, they can't book an appointment any earlier than 3 weeks after today
                 minDate = currentUser.getLatestVaccinationDate().plusWeeks(3);
             }
         } else {
             minDate = LocalDate.now().plusDays(1);
         }
 
-        LocalDate maxDate = minDate.plusMonths(6);
+        // Limiting it so users can only book at most 6 months in advance
+        LocalDate maxDate = LocalDate.now().plusMonths(6);
         model.addAttribute("minDate", minDate);
         model.addAttribute("maxDate", maxDate);
+
         return "vaccinee/checkForAvailability.html";
     }
 
@@ -95,45 +103,11 @@ public class VaccineeController {
         if (!takenTimes.isEmpty()) {
             times.removeAll(takenTimes);
         }
-        /*List<Appointment> apps = appointmentRepository.findTakenTimesFor("UCD");
-        List<String> takenTimes = new ArrayList<>();
-        for (Appointment appointment : apps) {
-            takenTimes.add(appointment.getAppointmentTime());
-        }
-        model.addAttribute("takenUCDTimes", takenTimes);
-
-        apps.clear();
-        apps = appointmentRepository.findTakenTimesFor("DCU");
-        takenTimes.clear();
-        for (Appointment appointment : apps) {
-            takenTimes.add(appointment.getAppointmentTime());
-        }
-        model.addAttribute("takenDCUTimes", takenTimes);
-
-        apps.clear();
-        apps = appointmentRepository.findTakenTimesFor("Ongar");
-        takenTimes.clear();
-        for (Appointment appointment : apps) {
-            takenTimes.add(appointment.getAppointmentTime());
-        }
-        model.addAttribute("takenOngarTimes", takenTimes);
-
-        apps.clear();
-        apps = appointmentRepository.findTakenTimesFor("Citywest");
-        takenTimes.clear();
-        for (Appointment appointment : apps) {
-            takenTimes.add(appointment.getAppointmentTime());
-        }
-        model.addAttribute("takenCitywestTimes", takenTimes);*/
 
         model.addAttribute("timesAvailable", times);
         model.addAttribute("appointment", appointment);
 
         // When do we get info on their last vaccination? -- Admin updates?
-        // Do I need to store the date of the last vaccination?
-        // To ensure they can't book 2 appointments -- check if 1st app date is before now
-        // Diary needs to be done
-        // Styling needs to be done
 
         return "/vaccinee/book_appointment";
     }
@@ -229,6 +203,7 @@ public class VaccineeController {
         return "/vaccinee/logged_in_home";
     }
 
+    // SHort method to fetch user that's currently logged in
     private UserInfo getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
