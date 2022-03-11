@@ -1,6 +1,12 @@
 # InsecureSoftwareEngineering
 
-# Requirements
+## Contributors
+ - Julia Filipczak (18310726)
+ - Roland Garza (18200061)
+ - Daiana Morjolic (18303531)
+ - Lucy Kerrigan (18322913)
+
+## Requirements
 - [x] Users can register to the Vaccination System. - Roland
 - [x] Registered users  can login and logout from the system. - Julia
 - [x] Registered users can book a vaccination appointment. - Lucy
