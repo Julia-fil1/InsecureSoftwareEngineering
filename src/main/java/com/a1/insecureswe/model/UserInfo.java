@@ -55,6 +55,11 @@ public class UserInfo implements User{
 
     private int doseNumber;
 
+    @Column
+    private LocalDate latestVaccinationDate;
+
+
+
     public Long getId() {
         return id;
     }
@@ -179,5 +184,13 @@ public class UserInfo implements User{
 
     public void setDoseNumber(int doseNumber) {
         this.doseNumber = doseNumber;
+    }
+
+    public LocalDate getLatestVaccinationDate() {
+        return latestVaccinationDate;
+    }
+
+    public void setLatestVaccinationDate(LocalDate latestVaccinationDate) {
+        this.latestVaccinationDate = latestVaccinationDate;
     }
 }

@@ -1,11 +1,7 @@
 package com.a1.insecureswe.controller;
 
 import com.a1.insecureswe.exception.HistoryNotFoundException;
-import com.a1.insecureswe.model.Forum;
-import com.a1.insecureswe.model.User;
-import com.a1.insecureswe.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.a1.insecureswe.exception.AppointmentTakenException;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.AppointmentRepository;
@@ -42,7 +38,6 @@ public class VaccineeController {
         currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
-        // currentUser.setNumOfVaccinations(currentUser.getAppointments().size());
         if (currentUser.getAppointments().size() == 1) {
             currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
         }
@@ -56,17 +51,22 @@ public class VaccineeController {
         UserInfo currentUser = getCurrentUser();
 
         // If the user has booked an appointment but hasn't received that dose yet, they can't book another appointment yet
-        if(currentUser.getAppointments().size() == 1 && currentUser.getNumOfVaccinations() == 0) {
-            return "vaccinee/alreadyBooked.html";
-        } else if (currentUser.getNumOfVaccinations() == 2) {
+        if(currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 0) {
+            if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
+                return "vaccinee/alreadyBooked.html";
+            }
+        } else if (currentUser.getDoseNumber() == 2) {
             return "vaccinee/fullyVaccinated.html";
         }
+
+        // Currently if currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 1, even if that's for a 2nd app, it lets
+        // you book infinite appointments...
 
         Appointment appointment = new Appointment();
         model.addAttribute("appointment", appointment);
 
         LocalDate minDate;
-        if(currentUser.getAppointments().size() == 1 && currentUser.getNumOfVaccinations() == 1) {
+        if(currentUser.getDoseNumber() == 1) {
             if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(2)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(1))) {
                 minDate = LocalDate.now().plusWeeks(1);
             } else if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(1)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(2))) {
@@ -76,13 +76,6 @@ public class VaccineeController {
             }
         } else {
             minDate = LocalDate.now().plusDays(1);
-        }
-
-        // Ensures user can't book an appointment before their current appointment
-        if (currentUser.getNumOfVaccinations() == 1) {
-            if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
-                return "vaccinee/alreadyBooked.html";
-            }
         }
 
         LocalDate maxDate = minDate.plusMonths(6);
@@ -100,9 +93,6 @@ public class VaccineeController {
         if (!takenTimes.isEmpty()) {
             times.removeAll(takenTimes);
         }
-        /*if(currentUser.getNumOfVaccinations() == 2) {
-            return "vaccinee/alreadyBooked.html";
-        }*/
         /*List<Appointment> apps = appointmentRepository.findTakenTimesFor("UCD");
         List<String> takenTimes = new ArrayList<>();
         for (Appointment appointment : apps) {
@@ -137,16 +127,11 @@ public class VaccineeController {
         model.addAttribute("timesAvailable", times);
         model.addAttribute("appointment", appointment);
 
-        // Might have to re-haul times if they have to be slots...
-        // Number of vaccinations supposed to be separate from appointments
         // When do we get info on their last vaccination? -- Admin updates?
-        // Do I need to store the date of the last vaccination???
+        // Do I need to store the date of the last vaccination?
         // To ensure they can't book 2 appointments -- check if 1st app date is before now
         // Diary needs to be done
         // Styling needs to be done
-
-        // Setting earliest time/date of appointment to be 09:00 tomorrow/3 weeks after 1st appointment
-        // Last appointment allowed at 21:00 for working people throughout the week
 
         return "/vaccinee/book_appointment";
     }
