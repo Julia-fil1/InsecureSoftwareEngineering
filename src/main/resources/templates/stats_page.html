@@ -1,20 +1,76 @@
-<div class="float-container" th:fragment="stats">
-    <div class="float-child">
+<!--<div class="float-container" th:fragment="stats">-->
+<!--    <div class="float-child">-->
+<div id="wrapper" th:fragment="stats">
+    <div id="left">
         <h1>Getting your COVID-19 vaccine</h1>
         <img class="halfContainer" src="/images/istockphoto-1283486156-612x612.jpg">
     </div>
-    <div class="float-child">
+    <div id="right">
         <div align="center">
-            <table cellpadding="5">
-                <h1>Statistics</h1>
+            <caption><h1 class="forumTableTitle">Statistics</h1></caption>
+            <table class="forumTable">
                 <tr>
-                    <td th:text="'Number of people helped: ' + ${totalUserCount}" /></td>
+                    <th colspan="6" th:text="'Number of people registered: ' + ${totalUserCount}" /></th>
+                </tr>
+            </table>
+            <br>
+            <table class="forumTable">
+                <tr>
+                    <th colspan="6">Number of people registered by nationality</th>
                 </tr>
                 <tr>
-                    <td th:text="'Number of Irish helped: ' + ${totalIrish}" /></td>
+                    <th>American</th>
+                    <th>Belgian</th>
+                    <th>Danish</th>
+                    <th>English</th>
+                    <th>German</th>
+                    <th>Irish</th>
                 </tr>
-                <tr th:each = "user: ${listUsers}">
-                    <td th:text="'Number of people helped: ' + ${user.name}" /></td>
+                <tr>
+                    <td th:text="${totalAmerican}" /></td>
+                    <td th:text="${totalBelgian}" /></td>
+                    <td th:text="${totalDanish}" /></td>
+                    <td th:text="${totalEnglish}" /></td>
+                    <td th:text="${totalGerman}" /></td>
+                    <td th:text="${totalIrish}" /></td>
+                </tr>
+                <tr>
+                    <th>Italian	</th>
+                    <th>Polish</th>
+                    <th>Portuguese</th>
+                    <th>Romanian</th>
+                    <th>Spanish</th>
+                    <th>Other</th>
+                </tr>
+                <tr>
+                    <td th:text="${totalItalian}" /></td>
+                    <td th:text="${totalPolish}" /></td>
+                    <td th:text="${totalPortuguese}" /></td>
+                    <td th:text="${totalRomanian}" /></td>
+                    <td th:text="${totalSpanish}" /></td>
+                    <td th:text="${totalOther}" /></td>
+                </tr>
+            </table>
+            <br>
+            <table class="forumTable">
+                <tr>
+                    <th colspan="6">Number of registered people by age group</th>
+                </tr>
+                <tr>
+                    <th>18-25</th>
+                    <th>26-35</th>
+                    <th>36-45</th>
+                    <th>46-55</th>
+                    <th>56-65</th>
+                    <th>65+</th>
+                </tr>
+                <tr>
+                    <td th:text="${totalAge18_25}" /></td>
+                    <td th:text="${totalAge26_35}" /></td>
+                    <td th:text="${totalAge36_45}" /></td>
+                    <td th:text="${totalAge46_55}" /></td>
+                    <td th:text="${totalAge56_65}" /></td>
+                    <td th:text="${totalAge65Plus}" /></td>
                 </tr>
             </table>
         </div>
