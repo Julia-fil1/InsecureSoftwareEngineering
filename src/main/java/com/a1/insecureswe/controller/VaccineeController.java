@@ -38,10 +38,15 @@ public class VaccineeController {
         currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
+
+        // Make the date of the new appointment the person's latestVaccinationDate
         if (currentUser.getAppointments().size() == 1) {
+            currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
+        } else if (currentUser.getAppointments().size() == 2) {
             currentUser.setLatestVaccinationDate(appointment.getAppointmentDate());
         }
         userInfoRepository.save(currentUser);
+
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";
     }
@@ -51,7 +56,8 @@ public class VaccineeController {
         UserInfo currentUser = getCurrentUser();
 
         // If the user has booked an appointment but hasn't received that dose yet, they can't book another appointment yet
-        if(currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 0) {
+        if((currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 0) ||
+                (currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 1 && currentUser.getLatestVaccinationDate().isAfter(LocalDate.now()))) {
             if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
                 return "vaccinee/alreadyBooked.html";
             }
@@ -59,27 +65,24 @@ public class VaccineeController {
             return "vaccinee/fullyVaccinated.html";
         }
 
-        // Currently if currentUser.getAppointments().size() == 1 && currentUser.getDoseNumber() == 1, even if that's for a 2nd app, it lets
-        // you book infinite appointments...
-
         Appointment appointment = new Appointment();
         model.addAttribute("appointment", appointment);
 
         LocalDate minDate;
-        if(currentUser.getDoseNumber() == 1) {
+        if(currentUser.getDoseNumber() == 1 && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(3))) {
             if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(2)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(1))) {
                 minDate = LocalDate.now().plusWeeks(1);
             } else if (LocalDate.now().isAfter(currentUser.getLatestVaccinationDate().plusWeeks(1)) && LocalDate.now().isBefore(currentUser.getLatestVaccinationDate().plusWeeks(2))) {
                 minDate = LocalDate.now().plusWeeks(2);
             } else {
-                minDate = currentUser.getLatestVaccinationDate().plusWeeks(1); //Check this
+                minDate = currentUser.getLatestVaccinationDate().plusWeeks(3);
             }
         } else {
             minDate = LocalDate.now().plusDays(1);
         }
 
         LocalDate maxDate = minDate.plusMonths(6);
-        model.addAttribute("tomorrow", minDate);
+        model.addAttribute("minDate", minDate);
         model.addAttribute("maxDate", maxDate);
         return "vaccinee/checkForAvailability.html";
     }
