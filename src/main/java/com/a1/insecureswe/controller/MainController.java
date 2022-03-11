@@ -40,17 +40,49 @@ public class MainController {
         long totalAmerican = userInfoRepository.findTotalAmerican();
         model.addAttribute("totalAmerican", totalAmerican);
 
+        //      Belgian
+        long totalBelgian = userInfoRepository.findTotalBelgian();
+        model.addAttribute("totalBelgian", totalBelgian);
+
+        //      Danish
+        long totalDanish = userInfoRepository.findTotalDanish();
+        model.addAttribute("totalDanish", totalDanish);
+
+        //      English
+        long totalEnglish = userInfoRepository.findTotalEnglish();
+        model.addAttribute("totalEnglish", totalEnglish);
+
+        //      German
+        long totalGerman = userInfoRepository.findTotalGerman();
+        model.addAttribute("totalGerman", totalGerman);
+
         //      Irish
         long totalIrish = userInfoRepository.findTotalIrish();
         model.addAttribute("totalIrish", totalIrish);
+
+        //      Italian
+        long totalItalian = userInfoRepository.findTotalItalian();
+        model.addAttribute("totalItalian", totalItalian);
 
         //      Polish
         long totalPolish = userInfoRepository.findTotalPolish();
         model.addAttribute("totalPolish", totalPolish);
 
-        //      Irish
+        //      Portuguese
+        long totalPortuguese = userInfoRepository.findTotalPortuguese();
+        model.addAttribute("totalPortuguese", totalPortuguese);
+
+        //      Romanian
         long totalRomanian = userInfoRepository.findTotalRomanian();
         model.addAttribute("totalRomanian", totalRomanian);
+
+        //     Spanish
+        long totalSpanish = userInfoRepository.findTotalSpanish();
+        model.addAttribute("totalSpanish", totalSpanish);
+
+        //      Other
+        long totalOther = userInfoRepository.findTotalOther();
+        model.addAttribute("totalOther", totalOther);
 
         //  AGE STAT CALLS
         long totalAge18_25 = userInfoRepository.findTotalAge18_25();

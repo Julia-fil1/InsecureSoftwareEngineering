@@ -21,14 +21,38 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     @Query("select count(v.nationality) from vaccinees v where v.nationality = 'American'")
     Long findTotalAmerican();
 
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Belgian'")
+    Long findTotalBelgian();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Danish'")
+    Long findTotalDanish();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'English'")
+    Long findTotalEnglish();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'German'")
+    Long findTotalGerman();
+
     @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Irish'")
     Long findTotalIrish();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Italian'")
+    Long findTotalItalian();
 
     @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Polish'")
     Long findTotalPolish();
 
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Portuguese'")
+    Long findTotalPortuguese();
+
     @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Romanian'")
     Long findTotalRomanian();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Spanish'")
+    Long findTotalSpanish();
+
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'totalOther'")
+    Long findTotalOther();
 
     //    Age queries
     @Query("select count(v.dob) from vaccinees v where floor(datediff(curdate(),dob)/365.2425) BETWEEN 18 AND 25")
