@@ -142,11 +142,16 @@ public class VaccineeController {
         List<Appointment> listApp = currentUser.getAppointments();
         model.addAttribute("listApp", listApp);
 
-        if(listApp != null) {
-            return "/vaccinee/history.html";
-        } else {
-            return "redirect:/vaccinee/history_clean.html";
-        }
-        //return "/vaccinee/history.html";
+//        if(listApp != null) {
+//            return "/vaccinee/history.html";
+//        } else {
+//            return "redirect:history_clean";
+//        }
+        return "/vaccinee/history.html";
     }
+
+//    @GetMapping("/history_clean")
+//    public String historyClean() {
+//        return "/vaccinee/history_clean.html";
+//    }
 }
