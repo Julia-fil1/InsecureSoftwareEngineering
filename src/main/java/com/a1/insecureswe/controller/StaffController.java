@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -66,7 +68,7 @@ public class StaffController {
         for (UserInfo u : listUsers) {
             if (u.getId().equals(id)) {
                 model.addAttribute("user", u);
-                System.out.println("user:" + u.getId());
+                // System.out.println("user:" + u.getId());
             }
         }
         return "admin/edit_user";
@@ -74,13 +76,59 @@ public class StaffController {
 
     @PostMapping("/edit_user")
     public String update(UserInfo userInfo, @RequestParam int doseNumber) throws UserNotFoundException {
-        System.out.println("id " + userInfo.getId());
+        // System.out.println("id " + userInfo.getId());
 
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
+        if(doseNumber == 1 && user.getAppointments().size() == 1) {
+            // If the user has booked an appointment before, book it 3 weeks later in the same place
+            // Could cause clashes...
+            Appointment nextAppointment = new Appointment();
+            nextAppointment.setAppointmentDate(user.getLatestVaccinationDate().plusWeeks(3));
+            nextAppointment.setLocation(user.getAppointments().get(0).getLocation());
+
+            // Book the same time or the earliest available that day
+            nextAppointment.setAppointmentTime(findTime(nextAppointment, user));
+
+            // Book the same vaccine type
+            nextAppointment.setVaccineType(user.getAppointments().get(0).getVaccineType());
+            appointmentRepository.save(nextAppointment);
+
+            List<Appointment> userAppointments = user.getAppointments();
+            userAppointments.add(nextAppointment);
+            user.setAppointments(userAppointments);
+
+        } else if (doseNumber == 1 && user.getAppointments().size() == 0) {
+            Appointment nextAppointment = new Appointment();
+            nextAppointment.setAppointmentDate(LocalDate.now().plusWeeks(3));
+            // Book the earliest available slot 3 weeks from now
+            nextAppointment.setAppointmentTime(findTime(nextAppointment, user));
+
+            //nextAppointment.setLocation(user.getAppointments().get(0).getLocation());
+            //nextAppointment.setVaccineType(user.getAppointments().get(0).getVaccineType());
+            appointmentRepository.save(nextAppointment);
+
+            List<Appointment> userAppointments = user.getAppointments();
+            userAppointments.add(nextAppointment);
+            user.setAppointments(userAppointments);
+        }
         user.setDoseNumber(doseNumber);
         userInfoRepository.save(user);
 
         return "admin/edit_user_success";
+    }
+
+    private String findTime(Appointment nextAppointment, UserInfo user) {
+        List<String> takenTimes = appointmentRepository.findTakenTimesFor(nextAppointment.getLocation(), nextAppointment.getAppointmentDate());
+        ArrayList<String> times = new ArrayList<>(Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"));
+
+        // If the same timeslot as is still available, use that, otherwise pick the earliest slot available that day
+        if (!takenTimes.isEmpty() && (user.getAppointments().isEmpty() || takenTimes.contains(user.getAppointments().get(0).getAppointmentTime()))) {
+            // Removing taken time slots
+            times.removeAll(takenTimes);
+            return times.get(0);
+        } else {
+            return user.getAppointments().get(0).getAppointmentTime();
+        }
     }
 
     @RequestMapping({"/appointments"})
