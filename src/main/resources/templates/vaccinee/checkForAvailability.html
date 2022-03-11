@@ -21,7 +21,7 @@
     <div class="form-group row">
         <label for="appdate" class="col-4 col-form-label">Choose a Date:</label>
         <div class="col-8">
-            <input type="date" id="appdate" name="appdate" th:field="*{appointmentDate}" th:min="${tomorrow}" th:max="${maxDate}" required> <!--min="${now}" th:attr="min=#{now}"-->
+            <input type="date" id="appdate" name="appdate" th:field="*{appointmentDate}" th:min="${minDate}" th:max="${maxDate}" required> <!--min="${now}" th:attr="min=#{now}"-->
         </div>
     </div>
     <div>
