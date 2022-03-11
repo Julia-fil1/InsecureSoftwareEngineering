@@ -53,6 +53,8 @@ public class UserInfo implements User{
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private List<Appointment> appointments;
 
+    private int doseNumber;
+
     public Long getId() {
         return id;
     }
@@ -169,5 +171,13 @@ public class UserInfo implements User{
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public int getDoseNumber() {
+        return doseNumber;
+    }
+
+    public void setDoseNumber(int doseNumber) {
+        this.doseNumber = doseNumber;
     }
 }

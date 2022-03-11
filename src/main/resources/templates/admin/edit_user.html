@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/admin/logged_in_home_staff :: head}"></head>
+<body>
+<nav th:replace="/admin/logged_in_home_staff :: navbar"></nav>
+
+<h1>Edit User Details</h1>
+
+<div>
+    <form th:action="@{/admin/edit_user}" th:object="${user}" method="post">
+        <table>
+            <tr>
+                <input style="display: none" type="text" th:field="*{id}" th:value="*{id}" class="form-control" readonly />
+                <td style="padding: 5px">ID:</td>
+                <td style="padding: 5px" th:text="*{id}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Username:</td>
+                <td style="padding: 5px" th:text="*{username}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Password:</td>
+                <td style="padding: 5px" th:text="*{password}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Role:</td>
+                <td style="padding: 5px" th:text="*{role}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Enabled:</td>
+                <td style="padding: 5px" th:text="*{enabled}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Name:</td>
+                <td style="padding: 5px" th:text="*{name}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Surname:</td>
+                <td style="padding: 5px" th:text="*{surname}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Nationality:</td>
+                <td style="padding: 5px" th:text="*{nationality}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">DOB:</td>
+                <td style="padding: 5px" th:text="*{dob}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Appointments:</td>
+                <td style="padding: 5px" th:text="*{appointments}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px"><label for="dose">Dose number:</label></td>
+                <!--                <td style="padding: 5px" th:text="${user.doseNumber}"></td>-->
+                <td>
+                    <select name="dose" id="dose" th:field="*{doseNumber}" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Address:</td>
+                <td style="padding: 5px" th:text="*{address}"></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px">Email:</td>
+                <td style="padding: 5px" th:text="*{email}"></td>
+            </tr>
+            <tr></tr>
+
+        </table>
+        <div>
+            <button type="submit" class="btn btn-primary">Submit change</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

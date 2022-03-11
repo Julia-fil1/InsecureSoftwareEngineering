@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/admin/logged_in_home_staff :: head}"></head>
+<body>
+<nav th:replace="/admin/logged_in_home_staff :: navbar"></nav>
+
+<h1>Registered Users</h1>
+
+<div>
+    <table>
+        <tbody th:each="user: ${listUsers}">
+        <tr>
+            <td style="padding: 5px" th:text="${user.id}"></td>
+            <td style="padding: 5px" th:text="${user.name}"></td>
+            <td style="padding: 5px" th:text="${user.surname}"></td>
+            <td style="padding: 5px"><a th:href="@{/admin/edit_user/{id}(id=${user.id})}">Edit User</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

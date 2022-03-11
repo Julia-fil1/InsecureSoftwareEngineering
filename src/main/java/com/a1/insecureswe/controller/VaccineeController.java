@@ -1,5 +1,9 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.exception.HistoryNotFoundException;
+import com.a1.insecureswe.model.Forum;
+import com.a1.insecureswe.model.User;
+import com.a1.insecureswe.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.a1.insecureswe.exception.AppointmentTakenException;
 import com.a1.insecureswe.model.Appointment;
@@ -27,9 +31,6 @@ public class VaccineeController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
-
-    @GetMapping("/history")
-    public String history() { return "/vaccinee/history.html"; }
 
     @PostMapping("/set_appointment")
     public String saveAppointment(Model model, Appointment appointment) {
@@ -148,6 +149,114 @@ public class VaccineeController {
         // Last appointment allowed at 21:00 for working people throughout the week
 
         return "/vaccinee/book_appointment";
+    }
+
+    @RequestMapping({"/history"})
+    public String history(Model model) throws HistoryNotFoundException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserInfo currentUser;
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        currentUser = userInfoRepository.findByUsername(username);
+
+        List<Appointment> listApp = currentUser.getAppointments();
+        model.addAttribute("listApp", listApp);
+
+//        if(listApp != null) {
+//            return "/vaccinee/history.html";
+//        } else {
+//            return "redirect:history_clean";
+//        }
+        return "/vaccinee/history.html";
+    }
+
+//    @GetMapping("/history_clean")
+//    public String historyClean() {
+//        return "/vaccinee/history_clean.html";
+//    }
+
+    @GetMapping("/logged_in_home")
+    public String loggedIn(Model model) {
+        //      Gets total count of users
+        List<UserInfo> listUsers = userInfoRepository.findAll();
+        long totalUserCount = listUsers.toArray().length;
+        model.addAttribute("totalUserCount", totalUserCount);
+
+        //  NATIONALITY STAT CALLS
+        //      American
+        long totalAmerican = userInfoRepository.findTotalAmerican();
+        model.addAttribute("totalAmerican", totalAmerican);
+
+        //      Belgian
+        long totalBelgian = userInfoRepository.findTotalBelgian();
+        model.addAttribute("totalBelgian", totalBelgian);
+
+        //      Danish
+        long totalDanish = userInfoRepository.findTotalDanish();
+        model.addAttribute("totalDanish", totalDanish);
+
+        //      English
+        long totalEnglish = userInfoRepository.findTotalEnglish();
+        model.addAttribute("totalEnglish", totalEnglish);
+
+        //      German
+        long totalGerman = userInfoRepository.findTotalGerman();
+        model.addAttribute("totalGerman", totalGerman);
+
+        //      Irish
+        long totalIrish = userInfoRepository.findTotalIrish();
+        model.addAttribute("totalIrish", totalIrish);
+
+        //      Italian
+        long totalItalian = userInfoRepository.findTotalItalian();
+        model.addAttribute("totalItalian", totalItalian);
+
+        //      Polish
+        long totalPolish = userInfoRepository.findTotalPolish();
+        model.addAttribute("totalPolish", totalPolish);
+
+        //      Portuguese
+        long totalPortuguese = userInfoRepository.findTotalPortuguese();
+        model.addAttribute("totalPortuguese", totalPortuguese);
+
+        //      Romanian
+        long totalRomanian = userInfoRepository.findTotalRomanian();
+        model.addAttribute("totalRomanian", totalRomanian);
+
+        //     Spanish
+        long totalSpanish = userInfoRepository.findTotalSpanish();
+        model.addAttribute("totalSpanish", totalSpanish);
+
+        //      Other
+        long totalOther = userInfoRepository.findTotalOther();
+        model.addAttribute("totalOther", totalOther);
+
+        //  AGE STAT CALLS
+        long totalAge18_25 = userInfoRepository.findTotalAge18_25();
+        model.addAttribute("totalAge18_25", totalAge18_25);
+
+        long totalAge26_35 = userInfoRepository.findTotalAge26_35();
+        model.addAttribute("totalAge26_35", totalAge26_35);
+
+        long totalAge36_45 = userInfoRepository.findTotalAge36_45();
+        model.addAttribute("totalAge36_45", totalAge36_45);
+
+        long totalAge46_55 = userInfoRepository.findTotalAge46_55();
+        model.addAttribute("totalAge46_55", totalAge46_55);
+
+        long totalAge56_65 = userInfoRepository.findTotalAge56_65();
+        model.addAttribute("totalAge56_65", totalAge56_65);
+
+        long totalAge65Plus = userInfoRepository.findTotalAge65Plus();
+        model.addAttribute("totalAge65Plus", totalAge65Plus);
+
+        return "/vaccinee/logged_in_home";
     }
 
     private UserInfo getCurrentUser() {

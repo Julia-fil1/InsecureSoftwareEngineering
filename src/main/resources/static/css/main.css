@@ -12,6 +12,23 @@ a {
 li {
     list-style: none;
 }
+/* -------------------------------HOMEPAGE IMAGE AND STATS STYLING------------------------------- */
+#wrapper {
+    display: flex;
+}
+
+#left {
+    flex: 0 0 50%;
+}
+
+#right {
+    flex: 1;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
 /* -------------------------------NAVBAR STYLING------------------------------- */
 .navbar {
     display: flex;

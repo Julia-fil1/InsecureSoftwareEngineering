@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{home_page :: head}"></head>
+<head th:replace="~{/vaccinee/logged_in_home :: head}"></head>
 <body>
-<nav th:fragment="navbar" class="navbar" >
-    <!-- LOGO -->
-    <div class="logo">InsecureSWE</div>
-    <!-- NAVIGATION MENU -->
-    <ul class="nav-links">
-        <!-- NAVIGATION MENUS -->
-        <div class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/">Forum</a></li>
-            <li><a href="/book">Bookings</a></li>
-            <li><a href="/history">History</a></li>
-            <li><a href="/statistics">Statistics</a></li>
-            <li><a href="/register">Signup</a></li>
-            <li><a href="/login">Logout</a></li>
-        </div>
-    </ul>
-</nav>
+<nav th:replace="/vaccinee/logged_in_home :: navbar"> </nav>
 
     <div class="container text-center">
         <div>
-            <h1>User History</h1>
+            <h1 class="forumTableTitle">Vaccine History</h1>
         </div>
         <div align="center">
-            <table border="1" cellpadding="5">
+            <table class="forumTable">
                 <tr>
                     <th>Date</th>
-                    <th>Appointment Info</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Vaccine Type</th>
                 </tr>
+                <tbody th:each="app: ${listApp}">
+                <tr>
+                    <td th:text="${app.appointmentDate}"></td>
+                    <td th:text="${app.appointmentTime}"></td>
+                    <td th:text="${app.location}"></td>
+                    <td th:text="${app.vaccineType}"></td>
+                </tr>
+                </tbody>
             </table>
         </div>
     </div>
