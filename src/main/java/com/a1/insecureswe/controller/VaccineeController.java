@@ -49,7 +49,19 @@ public class VaccineeController {
     UserInfoRepository userInfoRepository;
 
     @GetMapping("/logged_in_home")
-    public String loggedIn() {
+    public String loggedIn(Model model) {
+        //      Retrieves entire userInfo DB
+        List<UserInfo> listUsers = userInfoRepository.findAll();
+        model.addAttribute("listUsers", listUsers);
+
+        //      Gets total count of users
+        long totalUserCount = listUsers.toArray().length;
+        model.addAttribute("totalUserCount", totalUserCount);
+
+        //      Gets total count of Irish
+        long totalIrish = userInfoRepository.findTotalIrish();
+        model.addAttribute("totalIrish", totalIrish);
+
         return "/vaccinee/logged_in_home";
     }
 

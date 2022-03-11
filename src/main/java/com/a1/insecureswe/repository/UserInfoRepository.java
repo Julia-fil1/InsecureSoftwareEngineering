@@ -14,6 +14,10 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 //    public UserInfo findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
     UserInfo findByUsername(String username);
 
+    @Query("select count(v.nationality) from vaccinees v where v.nationality = 'Irish'")
+    Long findTotalIrish();
+
+
     @Override
     Optional<UserInfo> findById(Long aLong);
 }

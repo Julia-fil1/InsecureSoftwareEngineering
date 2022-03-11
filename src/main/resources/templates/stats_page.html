@@ -1,0 +1,22 @@
+<div class="float-container" th:fragment="stats">
+    <div class="float-child">
+        <h1>Getting your COVID-19 vaccine</h1>
+        <img class="halfContainer" src="/images/istockphoto-1283486156-612x612.jpg">
+    </div>
+    <div class="float-child">
+        <div align="center">
+            <table cellpadding="5">
+                <h1>Statistics</h1>
+                <tr>
+                    <td th:text="'Number of people helped: ' + ${totalUserCount}" /></td>
+                </tr>
+                <tr>
+                    <td th:text="'Number of Irish helped: ' + ${totalIrish}" /></td>
+                </tr>
+                <tr th:each = "user: ${listUsers}">
+                    <td th:text="'Number of people helped: ' + ${user.name}" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
