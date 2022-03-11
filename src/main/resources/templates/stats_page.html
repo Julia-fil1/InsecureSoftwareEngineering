@@ -1,15 +1,20 @@
-<div class="float-container" th:fragment="stats">
-    <div class="float-child">
+<!--<div class="float-container" th:fragment="stats">-->
+<!--    <div class="float-child">-->
+<div id="wrapper" th:fragment="stats">
+    <div id="left">
         <h1>Getting your COVID-19 vaccine</h1>
         <img class="halfContainer" src="/images/istockphoto-1283486156-612x612.jpg">
     </div>
-    <div class="float-child">
+    <div id="right">
         <div align="center">
-            <table cellpadding="5">
-                <h1>Statistics</h1>
+            <caption><h1 class="forumTableTitle">Statistics</h1></caption>
+            <table class="forumTable">
                 <tr>
-                    <td colspan="6" th:text="'Number of people registered: ' + ${totalUserCount}" /></td>
+                    <th colspan="6" th:text="'Number of people registered: ' + ${totalUserCount}" /></th>
                 </tr>
+            </table>
+            <br>
+            <table class="forumTable">
                 <tr>
                     <th colspan="6">Number of people registered by nationality</th>
                 </tr>
@@ -45,6 +50,9 @@
                     <td th:text="${totalSpanish}" /></td>
                     <td th:text="${totalOther}" /></td>
                 </tr>
+            </table>
+            <br>
+            <table class="forumTable">
                 <tr>
                     <th colspan="6">Number of registered people by age group</th>
                 </tr>
