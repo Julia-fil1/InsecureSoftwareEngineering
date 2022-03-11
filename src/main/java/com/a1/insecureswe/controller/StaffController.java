@@ -106,6 +106,7 @@ public class StaffController {
             List<Appointment> userAppointments = user.getAppointments();
             userAppointments.add(nextAppointment);
             user.setAppointments(userAppointments);
+            user.setLatestVaccinationDate(nextAppointment.getAppointmentDate());
             userInfoRepository.save(user);
 
         } else if (doseNumber == 1 && user.getAppointments().size() == 0) {

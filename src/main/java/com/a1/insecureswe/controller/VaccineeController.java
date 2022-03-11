@@ -61,6 +61,8 @@ public class VaccineeController {
             if (LocalDate.now().isBefore(currentUser.getAppointments().get(0).getAppointmentDate())) {
                 return "vaccinee/alreadyBooked.html";
             }
+        } else if (currentUser.getAppointments().size() == 2) {
+            return "vaccinee/alreadyBooked.html";
         } else if (currentUser.getDoseNumber() == 2) {
             // If a user has had 2 doses, they're fully vaccinated and can't book another appointment
             return "vaccinee/fullyVaccinated.html";
@@ -203,7 +205,7 @@ public class VaccineeController {
         return "/vaccinee/logged_in_home";
     }
 
-    // SHort method to fetch user that's currently logged in
+    // Short method to fetch user that's currently logged in
     private UserInfo getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
