@@ -18,9 +18,6 @@ public class MainController {
     private UserInfoRepository userInfoRepository;
 
     @Autowired
-    private StaffRepository staffRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired

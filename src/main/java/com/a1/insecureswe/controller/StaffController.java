@@ -1,5 +1,6 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.exception.AppointmentNotFoundException;
 import com.a1.insecureswe.exception.QuestionNotFoundException;
 import com.a1.insecureswe.exception.UserNotFoundException;
 import com.a1.insecureswe.model.Appointment;
@@ -116,8 +117,8 @@ public class StaffController {
     }
 
     @PostMapping("/edit_vaccine_type")
-    public String changeType(Appointment app) throws QuestionNotFoundException {
-        Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new QuestionNotFoundException(app.getId()));
+    public String changeType(Appointment app) throws AppointmentNotFoundException {
+        Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new AppointmentNotFoundException(app.getId()));
         a.setVaccineType(app.getVaccineType());
         this.appointmentRepository.save(a);
         return "admin/edit_user_success";
@@ -136,13 +137,6 @@ public class StaffController {
             return user.getAppointments().get(0).getAppointmentTime();
         }
     }
-
-    /*@RequestMapping({"/appointments"})
-    public String viewAppointmentPage(Model model){
-        List<Appointment> listappoints = appointmentRepository.findAll();
-        model.addAttribute("listappoints", listappoints);
-        return "/admin/admin_appointments_page.html";
-    }*/
 
     @GetMapping("/logged_in_home_staff")
     public String loggedInStaff(Model model) {
