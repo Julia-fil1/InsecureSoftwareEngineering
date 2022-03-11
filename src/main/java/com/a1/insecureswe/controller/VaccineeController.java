@@ -1,5 +1,6 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.exception.HistoryNotFoundException;
 import com.a1.insecureswe.model.Forum;
 import com.a1.insecureswe.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,17 +57,14 @@ public class VaccineeController {
         return "/vaccinee/logged_in_home";
     }
 
-    @GetMapping("/history")
-    public String history() { return "/vaccinee/history.html"; }
-
     @PostMapping("/set_appointment")
     public String saveAppointment(Model model, Appointment appointment) throws AppointmentTakenException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         UserInfo currentUser;
-
         String username;
-        if(principal instanceof UserDetails) {
+
+        if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
@@ -97,7 +96,7 @@ public class VaccineeController {
         currentUser.setAppointments(userAppointments);
 
         appointmentRepository.save(appointment);
-        currentUser.setIsNewUser(false);
+        //currentUser.setIsNewUser(false);
         //setHistory(currentUser.getIsNewUser());
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";
@@ -110,27 +109,16 @@ public class VaccineeController {
         // Setting earliest time/date of appointment to be 09:00 tomorrow
         // Last appointment allowed at 21:00 for working people throughout the week
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-        LocalDate maxDate= tomorrow.plusMonths(6);
+        LocalDate maxDate = tomorrow.plusMonths(6);
         model.addAttribute("tomorrow", tomorrow);
         model.addAttribute("maxDate", maxDate);
         return "/vaccinee/book_appointment";
     }
 
-    @GetMapping("/history_record")
-    public String setHistory(Model model) {
-        List<Appointment> listAppointments = appointmentRepository.findAll();
-        model.addAttribute("listAppointments", listAppointments);
-//        if(!isNewUser) {
-//            return "vaccinee/history_record";
-//        }
-//        else {
-//            return "redirect:vaccinee/history_clean";
-//        }
-        return "vaccinee/history_record";
+    @RequestMapping({"/history"})
+    public String history(Model model) throws HistoryNotFoundException {
+        List<Appointment> listApp = appointmentRepository.findAll();
+        model.addAttribute("listApp", listApp);
+        return "/vaccinee/history.html";
     }
-
-//    @PostMapping("/set_history")
-//    public String history() {
-//        return "/vaccinee/history_record.html";
-//    }
 }

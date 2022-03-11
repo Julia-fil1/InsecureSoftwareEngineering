@@ -14,11 +14,13 @@
                     <th>Date</th>
                     <th>Time</th>
                     <th>Location</th>
+                    <th>Vaccine Type</th>
                 </tr>
-                <tr th:each="post: ${listAppointments}">
+                <tr th:each="post: ${listApp}">
                     <td th:text="post: ${post.date}"></td>
                     <td th:text="post: ${post.time}"></td>
                     <td th:text="post: ${post.location}"></td>
+                    <td th:text="post: ${post.vaccineType}"></td>
                 </tr>
             </table>
         </div>

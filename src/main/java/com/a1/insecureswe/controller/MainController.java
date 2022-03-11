@@ -78,9 +78,6 @@ public class MainController {
         return "redirect:forum";
     }
 
-//    @GetMapping("/history")
-//    public String history() { return "history_record.html"; }
-
     @GetMapping("/adminOnly")
     public String only() {
         return "adminOnly.html";

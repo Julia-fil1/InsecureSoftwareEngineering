@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 
+import java.util.List;
+
 @Entity(name = "vaccinees")
 @Table(name = "vaccinees")
 public class UserInfo implements User{
