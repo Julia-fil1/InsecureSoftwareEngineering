@@ -57,12 +57,11 @@ public class DbInit implements CommandLineRunner {
 
         UserInfo user_info_2 = new UserInfo();
 
-//        user_info.setId(1L);
         user_info_2.setUsername("jane");
         user_info_2.setPassword(passwordEncoder.encode("password"));
         user_info_2.setRole("VACCINEE");
         user_info_2.setEnabled(1);
-        user_info_2.setName("jane");
+        user_info_2.setName("Jane");
         user_info_2.setSurname("Doe");
         user_info_2.setDob(LocalDate.of(2000, 10, 25));
         user_info_2.setPpsNumber("1234567B");
@@ -71,7 +70,40 @@ public class DbInit implements CommandLineRunner {
         user_info_2.setEmail("jane.doe@gmail.com");
         user_info_2.setNationality("Romanian");
 
+        UserInfo user_info_3 = new UserInfo();
+
+        user_info_3.setUsername("mark");
+        user_info_3.setPassword(passwordEncoder.encode("password"));
+        user_info_3.setRole("VACCINEE");
+        user_info_3.setEnabled(1);
+        user_info_3.setName("Mark");
+        user_info_3.setSurname("Smith");
+        user_info_3.setDob(LocalDate.of(1968, 10, 21));
+        user_info_3.setPpsNumber("1234567C");
+        user_info_3.setAddress("15 Main Road, Dublin, D02 XY68");
+        user_info_3.setPhoneNumber("087123467");
+        user_info_3.setEmail("mark.smith@gmail.com");
+        user_info_3.setNationality("English");
+
+        UserInfo user_info_4 = new UserInfo();
+
+        user_info_4.setUsername("mary");
+        user_info_4.setPassword(passwordEncoder.encode("password"));
+        user_info_4.setRole("VACCINEE");
+        user_info_4.setEnabled(1);
+        user_info_4.setName("Mary");
+        user_info_4.setSurname("Johnson");
+        user_info_4.setDob(LocalDate.of(1972, 12, 21));
+        user_info_4.setPpsNumber("1234567D");
+        user_info_4.setAddress("46 Main Road, Clongriffin, D15 XY68");
+        user_info_4.setPhoneNumber("087123222");
+        user_info_4.setEmail("mary.johnson@gmail.com");
+        user_info_4.setNationality("American");
+
         AllUsers newVaccineeUser = new AllUsers(user_info.getUsername(), user_info.getPassword(), user_info.getRole(), 1);
+        AllUsers newVaccineeUser2 = new AllUsers(user_info_2.getUsername(), user_info_2.getPassword(), user_info_2.getRole(), 1);
+        AllUsers newVaccineeUser3 = new AllUsers(user_info_3.getUsername(), user_info_3.getPassword(), user_info_3.getRole(), 1);
+        AllUsers newVaccineeUser4 = new AllUsers(user_info_4.getUsername(), user_info_4.getPassword(), user_info_4.getRole(), 1);
 
         Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", 1);
         AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), 1);
@@ -100,9 +132,9 @@ public class DbInit implements CommandLineRunner {
         forum_4.setQuestion("Unanswered test question. Just enter the id and input your answer.");
         forum_4.setAnswer("");
 
-        List<UserInfo> user_info1 = Arrays.asList(user_info,user_info_2);
+        List<UserInfo> user_info1 = Arrays.asList(user_info,user_info_2, user_info_3, user_info_4);
         List<Staff> staffList = Arrays.asList(staff);
-        List<AllUsers> allUsersList = Arrays.asList(newVaccineeUser, newStaffUser);
+        List<AllUsers> allUsersList = Arrays.asList(newVaccineeUser, newVaccineeUser2, newVaccineeUser3, newVaccineeUser4, newStaffUser);
         List<Forum> forumList = Arrays.asList(forum_1,forum_2,forum_3,forum_4);
 
         this.userInfoRepository.saveAll(user_info1);

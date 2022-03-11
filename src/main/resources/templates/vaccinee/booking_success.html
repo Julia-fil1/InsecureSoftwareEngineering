@@ -3,36 +3,35 @@
 <head th:replace="~{/vaccinee/logged_in_home :: head}">
 </head>
 <body>
-<nav th:replace="/vaccinee/logged_in_home :: navbar"> </nav>
-    <div>
-        <h3>Appointment Confirmed.</h3>
-        <!--Might display details of appointment when confirming booking-->
-        <h4>Details:</h4>
-        <table id="appTable">
-            <thead>
-            <tr>
-                <th><strong>Date</strong></th>
-                <th><strong>Time</strong></th>
-                <th><strong>Location</strong></th>
-                <th><strong>Vaccine Type</strong></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:object="${appointment}">
-                <td th:text="${appointment.appointmentDate}"></td>
-                <td th:text="${appointment.appointmentTime}"></td>
-                <td th:text="${appointment.location}"></td>
-                <td th:text="${appointment.vaccineType}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <nav th:replace="/vaccinee/logged_in_home :: navbar"> </nav>
+    <div class="container text-center">
+        <div>
+            <h1>Appointment Confirmed.</h1>
+            <!--Might display details of appointment when confirming booking-->
+            <h4 class="forumTableTitle">Details:</h4>
+            <table class="forumTable" id="appTable">
+                <thead>
+                <tr>
+                    <th><strong>Date</strong></th>
+                    <th><strong>Time</strong></th>
+                    <th><strong>Location</strong></th>
+                    <th><strong>Vaccine Type</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:object="${appointment}">
+                    <td th:text="${appointment.appointmentDate}"></td>
+                    <td th:text="${appointment.appointmentTime}"></td>
+                    <td th:text="${appointment.location}"></td>
+                    <td th:text="${appointment.vaccineType}"></td>
+                </tr>
+                </tbody>
+            </table>
 
-        <br>
-        <br>
-        <a href="/" class="return">Return Home</a>
-
-
+            <br>
+            <br>
+            <a href="/" class="return">Return Home</a>
+        </div>
     </div>
-
 </body>
 </html>
