@@ -43,7 +43,7 @@ public class MainController {
         user.setEnabled(1);
         this.userInfoRepository.save(user);
         this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), 1));
-        user.setIsNewUser(true);
+        //user.setIsNewUser(true);
         return "register_success.html";
     }
 

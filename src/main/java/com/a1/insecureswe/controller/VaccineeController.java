@@ -75,7 +75,7 @@ public class VaccineeController {
         }*/
         appointmentRepository.save(appointment);
         currentUser.setIsNewUser(false);
-        setHistory(currentUser.getIsNewUser());
+        //setHistory(currentUser.getIsNewUser());
         return "vaccinee/booking_success";
     }
 
@@ -85,14 +85,17 @@ public class VaccineeController {
         return "/vaccinee/book_appointment";
     }
 
-    @GetMapping("/history")
-    public String setHistory(Boolean isNewUser) {
-        if(!isNewUser) {
-            return "vaccinee/history_record";
-        }
-        else {
-            return "vaccinee/history_clean";
-        }
+    @GetMapping("/history_record")
+    public String setHistory(Model model) {
+        List<Appointment> listAppointments = appointmentRepository.findAll();
+        model.addAttribute("listAppointments", listAppointments);
+//        if(!isNewUser) {
+//            return "vaccinee/history_record";
+//        }
+//        else {
+//            return "redirect:vaccinee/history_clean";
+//        }
+        return "vaccinee/history_record";
     }
 
 //    @PostMapping("/set_history")

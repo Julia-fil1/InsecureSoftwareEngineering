@@ -28,7 +28,13 @@
             <table border="1" cellpadding="5">
                 <tr>
                     <th>Date</th>
-                    <th>Appointment Info</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                </tr>
+                <tr th:each="post: ${listAppointments}">
+                    <td th:text="post: ${post.date}"></td>
+                    <td th:text="post: ${post.time}"></td>
+                    <td th:text="post: ${post.location}"></td>
                 </tr>
             </table>
         </div>
