@@ -8,13 +8,41 @@
             <table cellpadding="5">
                 <h1>Statistics</h1>
                 <tr>
-                    <td th:text="'Number of people helped: ' + ${totalUserCount}" /></td>
+                    <td colspan="6" th:text="'Number of people registered: ' + ${totalUserCount}" /></td>
                 </tr>
                 <tr>
-                    <td th:text="'Number of Irish helped: ' + ${totalIrish}" /></td>
+                    <th colspan="6">Number of people registered by nationality</th>
                 </tr>
-                <tr th:each = "user: ${listUsers}">
-                    <td th:text="'Number of people helped: ' + ${user.name}" /></td>
+                <tr>
+                    <th>American</th>
+                    <th>Irish</th>
+                    <th>Polish</th>
+                    <th>Romanian</th>
+                </tr>
+                <tr>
+                    <td th:text="${totalAmerican}" /></td>
+                    <td th:text="${totalIrish}" /></td>
+                    <td th:text="${totalPolish}" /></td>
+                    <td th:text="${totalRomanian}" /></td>
+                </tr>
+                <tr>
+                    <th colspan="6">Number of registered people by age group</th>
+                </tr>
+                <tr>
+                    <th>18-25</th>
+                    <th>26-35</th>
+                    <th>36-45</th>
+                    <th>46-55</th>
+                    <th>56-65</th>
+                    <th>65+</th>
+                </tr>
+                <tr>
+                    <td th:text="${totalAge18_25}" /></td>
+                    <td th:text="${totalAge26_35}" /></td>
+                    <td th:text="${totalAge36_45}" /></td>
+                    <td th:text="${totalAge46_55}" /></td>
+                    <td th:text="${totalAge56_65}" /></td>
+                    <td th:text="${totalAge65Plus}" /></td>
                 </tr>
             </table>
         </div>

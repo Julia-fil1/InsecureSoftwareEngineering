@@ -30,17 +30,46 @@ public class MainController {
     public String viewHomePage(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        //      Retrieves entire userInfo DB
-        List<UserInfo> listUsers = userInfoRepository.findAll();
-        model.addAttribute("listUsers", listUsers);
-
         //      Gets total count of users
+        List<UserInfo> listUsers = userInfoRepository.findAll();
         long totalUserCount = listUsers.toArray().length;
         model.addAttribute("totalUserCount", totalUserCount);
 
-        //      Gets total count of Irish
+        //  NATIONALITY STAT CALLS
+        //      American
+        long totalAmerican = userInfoRepository.findTotalAmerican();
+        model.addAttribute("totalAmerican", totalAmerican);
+
+        //      Irish
         long totalIrish = userInfoRepository.findTotalIrish();
         model.addAttribute("totalIrish", totalIrish);
+
+        //      Polish
+        long totalPolish = userInfoRepository.findTotalPolish();
+        model.addAttribute("totalPolish", totalPolish);
+
+        //      Irish
+        long totalRomanian = userInfoRepository.findTotalRomanian();
+        model.addAttribute("totalRomanian", totalRomanian);
+
+        //  AGE STAT CALLS
+        long totalAge18_25 = userInfoRepository.findTotalAge18_25();
+        model.addAttribute("totalAge18_25", totalAge18_25);
+
+        long totalAge26_35 = userInfoRepository.findTotalAge26_35();
+        model.addAttribute("totalAge26_35", totalAge26_35);
+
+        long totalAge36_45 = userInfoRepository.findTotalAge36_45();
+        model.addAttribute("totalAge36_45", totalAge36_45);
+
+        long totalAge46_55 = userInfoRepository.findTotalAge46_55();
+        model.addAttribute("totalAge46_55", totalAge46_55);
+
+        long totalAge56_65 = userInfoRepository.findTotalAge56_65();
+        model.addAttribute("totalAge56_65", totalAge56_65);
+
+        long totalAge65Plus = userInfoRepository.findTotalAge65Plus();
+        model.addAttribute("totalAge65Plus", totalAge65Plus);
 
         if(principal.toString().contains("VACCINEE")) {
             return "redirect:/vaccinee/logged_in_home";
