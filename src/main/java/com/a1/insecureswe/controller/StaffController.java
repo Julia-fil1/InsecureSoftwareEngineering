@@ -1,5 +1,6 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.exception.AppointmentNotFoundException;
 import com.a1.insecureswe.exception.QuestionNotFoundException;
 import com.a1.insecureswe.exception.UserNotFoundException;
 import com.a1.insecureswe.model.Appointment;
@@ -9,14 +10,10 @@ import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.ForumRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -95,30 +92,12 @@ public class StaffController {
     }
 
     @PostMapping("/edit_vaccine_type")
-    public String changeType(Appointment app) throws QuestionNotFoundException {
-        Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new QuestionNotFoundException(app.getId()));
+    public String changeType(Appointment app) throws AppointmentNotFoundException {
+        Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new AppointmentNotFoundException(app.getId()));
         a.setVaccineType(app.getVaccineType());
         this.appointmentRepository.save(a);
         return "admin/edit_user_success";
     }
-
-//    @RequestMapping({"/appointments"})
-//    public String viewAppointmentPage(Model model){
-//        List<Appointment> listappoints = appointmentRepository.findAll();
-//        model.addAttribute("listappoints", listappoints);
-////        List<UserInfo> listappoints = userInfoRepository.findAll();
-////        model.addAttribute("listappoints", listappoints);
-//        return "/admin/admin_appointments_page.html";
-//    }
-
-//    @PostMapping("/change_vaccine")
-//    public String processQuestion(Appointment app) throws QuestionNotFoundException {
-////        need to make exception
-//        Appointment app_1 = appointmentRepository.findById(app.getId()).orElseThrow(()-> new QuestionNotFoundException(app.getId()));
-//        app_1.setVaccineType(app_1.getVaccineType());
-//        this.appointmentRepository.save(app_1);
-//        return "redirect:appointments";
-//    }
 
     @GetMapping("/logged_in_home_staff")
     public String loggedInStaff(Model model) {
