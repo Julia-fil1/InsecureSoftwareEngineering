@@ -31,6 +31,15 @@
 <!--        </div>-->
 <!--    </form>-->
     <table class="forumTable">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Vaccine Type</th>
+        </tr>
+        </thead>
         <tbody th:each="app: ${listappoints}">
         <tr>
             <td th:text="${app.id}"></td>
