@@ -4,107 +4,52 @@
 </head>
 <body>
     <nav th:replace="/vaccinee/logged_in_home :: navbar"> </nav>
-    <form th:action="@{/vaccinee/set_appointment}" th:object="${appointment}" method="post">
-
-        <div class="form-group row">
-            <label for="location" class="col-4 col-form-label">Selected Centre:</label>
-            <div class="col-8">
-                <input type="text" id="location" th:field="*{location}" th:value="${appointment.location}" th:text="${appointment.location}" readonly hidden>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="appdate" class="col-4 col-form-label">Selected Date:</label>
-            <div class="col-8">
-                <input type="text" id="appdate" th:field="*{appointmentDate}" th:value="${appointment.appointmentDate}" th:text="${appointment.appointmentDate}" readonly hidden>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="apptime" class="col-4 col-form-label">Choose a Time:</label>
-            <div class="col-8">
-                <select th:field="*{appointmentTime}" id="apptime">
-                    <option th:each="time : ${timesAvailable}" th:value="${time}" th:text="${time}"></option>
-                </select>
-                <!--<button type="button" id="timeOptions" onclick="timeSelect()">Check available times</button>-->
-                <!--<select id="apptime" th:field="*{appointmentTime}">
-                    <option th:foreach
-                </select>-->
-                <!--<script>
-                    /*function getTakenTimes(location) {
-                        var takenTimes;
-                        if (location === "Citywest") {
-                            takenTimes = [[${takenCitywestTime}]];
-                        } else if (location === "UCD") {
-                            takenTimes = ["09:00", "10:00", "11:00"];
-                        } else if (location === "DCU") {
-                            takenTimes = ["13:00", "15:00", "17:00"];
-                        } else {
-                            takenTimes = ["18:00", "19:00", "20:00"];
-                        }
-
-                    }*/
-                    //function timeSelect() {
-                        /*var dbConnection = SQL.connect( { Driver: "MySQL", Host: "localhost", Port: 3306, Database: "insecureswe", UserName: "root", Password: "2ra-$Ta2_" } );
-
-                        var location = document.getElementById("location").value;
-                        var date = document.getElementById("appdate").value;
-                        var query;*/
-
-                        var times = [[${timesAvailable}]];
-                        //var takenTimes;
-                        /*if (location === "Citywest") {
-                            times = ['12:00', '14:00', '16:00'];
-                            takenTimes = [[${takenCitywestTimes}]];
-                            if (takenTimes.length > 0) {
-                                times = times.filter((e1) => !takenTimes.includes(e1));
-                            }
-
-                        } else if (location === "UCD") {
-                            times = ['09:00', '10:00', '11:00'];
-                            takenTimes = [[${takenUCDTimes}]];
-                            if (takenTimes.length > 0) {
-                                times = times.filter((e1) => !takenTimes.includes(e1));
-                            }
-
-                        } else if (location === "DCU") {
-                            times = ["13:00", "15:00", "17:00"];
-                            takenTimes = [[${takenDCUTimes}]];
-                            if (takenTimes.length > 0) {
-                                times = times.filter((e1) => !takenTimes.includes(e1));
-                            }
-
-                        } else {
-                            times = ["18:00", "19:00", "20:00"];
-                            takenTimes = [[${takenOngarTimes}]];
-                            if (takenTimes.length > 0) {
-                                times = times.filter((e1) => !takenTimes.includes(e1));
-                            }
-                        }*/
-
-                        var str = ""
-                        for (var time of times) {
-                            str += "<option>" + time + "</option>"
-                        }
-                        document.getElementById("apptime").innerHTML = str;
-                   // }
-                </script>-->
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="vaccineType" class="col-4 col-form-label">Choose a vaccination type:</label>
-            <div class="col-8">
-                <select name="vaccineType" id="vaccineType" th:field="*{vaccineType}" required>
-                    <option value="Pfizer-BioNTech">Pfizer-BioNTech</option>
-                    <option value="Moderna">Moderna</option>
-                </select>
-            </div>
-        </div>
+    <div class="container text-center">
         <div>
-            <button type="submit" class="btn btn-primary">Check for Availability</button>
+            <h1>Book Appointment</h1>
         </div>
-    </form>
+        <form th:action="@{/vaccinee/set_appointment}" th:object="${appointment}" method="post"
+              style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3">
+
+                <div class="form-group row">
+                    <label for="location" class="col-4 col-form-label">Selected Centre:</label>
+                    <div class="col-8">
+                        <input type="text" id="location" th:field="*{location}" th:value="${appointment.location}" th:text="${appointment.location}" readonly hidden>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="appdate" class="col-4 col-form-label">Selected Date:</label>
+                    <div class="col-8">
+                        <input type="text" id="appdate" th:field="*{appointmentDate}" th:value="${appointment.appointmentDate}" th:text="${appointment.appointmentDate}" readonly hidden>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="apptime" class="col-4 col-form-label">Choose a Time:</label>
+                    <div class="col-8">
+                        <select th:field="*{appointmentTime}" id="apptime">
+                            <option th:each="time : ${timesAvailable}" th:value="${time}" th:text="${time}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="vaccineType" class="col-4 col-form-label">Choose a vaccination type:</label>
+                    <div class="col-8">
+                        <select name="vaccineType" id="vaccineType" th:field="*{vaccineType}" required>
+                            <option value="Pfizer-BioNTech">Pfizer-BioNTech</option>
+                            <option value="Moderna">Moderna</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Check for Availability</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 </body>
 </html>
