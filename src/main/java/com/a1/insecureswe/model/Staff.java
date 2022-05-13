@@ -9,20 +9,28 @@ public class Staff implements User {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
     private String password;
 
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String ppsNumber;
+
     private String role;
 
     private int enabled;
 
-    public Staff(String username, String password, String role, int enabled) {
+    public Staff(String username, String password, String role, String email, String ppsNumber, int enabled) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.email = email;
+        this.ppsNumber = ppsNumber;
         this.enabled = enabled;
     }
 
@@ -71,5 +79,23 @@ public class Staff implements User {
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPpsNumber() {
+        return ppsNumber;
+    }
+
+    public void setPpsNumber(String ppsNumber) {
+        this.ppsNumber = ppsNumber;
     }
 }
