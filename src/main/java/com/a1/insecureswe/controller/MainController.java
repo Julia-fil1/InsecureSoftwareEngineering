@@ -1,5 +1,6 @@
 package com.a1.insecureswe.controller;
 
+import com.a1.insecureswe.LoginAttemptService;
 import com.a1.insecureswe.model.*;
 import com.a1.insecureswe.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -22,6 +25,9 @@ public class MainController {
 
     @Autowired
     private ForumRepository forumRepository;
+
+    @Autowired
+    private LoginAttemptService loginAttemptService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -42,8 +48,15 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login.html";
+    public String login(Model model, HttpServletRequest request, @RequestParam("error" ) final Optional<String> error) {
+        error.ifPresent(e -> {
+            model.addAttribute("error", e);
+        });
+        if (loginAttemptService.isBlocked(request.getRemoteAddr())) {
+            return "blocked.html";
+        } else {
+            return "login.html";
+        }
     }
 
     @GetMapping("/forum")
