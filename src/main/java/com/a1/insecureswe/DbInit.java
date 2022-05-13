@@ -100,13 +100,13 @@ public class DbInit implements CommandLineRunner {
         user_info_4.setEmail("mary.johnson@gmail.com");
         user_info_4.setNationality("American");
 
-        AllUsers newVaccineeUser = new AllUsers(user_info.getUsername(), user_info.getPassword(), user_info.getRole(), 1);
-        AllUsers newVaccineeUser2 = new AllUsers(user_info_2.getUsername(), user_info_2.getPassword(), user_info_2.getRole(), 1);
-        AllUsers newVaccineeUser3 = new AllUsers(user_info_3.getUsername(), user_info_3.getPassword(), user_info_3.getRole(), 1);
-        AllUsers newVaccineeUser4 = new AllUsers(user_info_4.getUsername(), user_info_4.getPassword(), user_info_4.getRole(), 1);
+        AllUsers newVaccineeUser = new AllUsers(user_info.getUsername(), user_info.getPassword(), user_info.getRole(), user_info.getEmail(),user_info.getPpsNumber(), 1);
+        AllUsers newVaccineeUser2 = new AllUsers(user_info_2.getUsername(), user_info_2.getPassword(), user_info_2.getRole(),user_info_2.getEmail(),user_info_2.getPpsNumber(), 1);
+        AllUsers newVaccineeUser3 = new AllUsers(user_info_3.getUsername(), user_info_3.getPassword(), user_info_3.getRole(),user_info_3.getEmail(),user_info_3.getPpsNumber(), 1);
+        AllUsers newVaccineeUser4 = new AllUsers(user_info_4.getUsername(), user_info_4.getPassword(), user_info_4.getRole(),user_info_4.getEmail(),user_info_4.getPpsNumber(), 1);
 
-        Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", 1);
-        AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), 1);
+        Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", "admin@yahoo.com", "1234567Z", 1);
+        AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), staff.getEmail(), staff.getPpsNumber(), 1);
 
 // -------------------------- FORUM --------------------------
         Forum forum_1 = new Forum();

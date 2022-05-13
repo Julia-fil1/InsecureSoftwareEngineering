@@ -25,20 +25,54 @@ public class MainController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
+        String errorMessage = null;
         model.addAttribute("user", new UserInfo());
+        model.addAttribute("errorMessage", errorMessage);
         return "signup_form.html";
     }
 
     @PostMapping("/process_register")
-    public String processRegister(UserInfo user) {
+    public String processRegister(@ModelAttribute("user") UserInfo user, Model model) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            System.out.println("An account associated with this username has already been created.");
+            String errorMessage = "An account associated with this username has already been created.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "signup_form.html";
+        } else if (userRepository.findByEmail(user.getEmail()) != null) {
+            System.out.println("An account associated with this email address has already been created.");
+            String errorMessage = "An account associated with this email address has already been created.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "signup_form.html";
+        } else if (userRepository.findByPpsNumber(user.getPpsNumber()) != null) {
+            System.out.println("An account associated with this PPS number has already been created.");
+            String errorMessage = "An account associated with this PPS number has already been created.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "signup_form.html";
+        }
+
         String encoded = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(encoded);
         user.setRole("VACCINEE");
         user.setEnabled(1);
         this.userInfoRepository.save(user);
-        this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), 1));
-        //user.setIsNewUser(true);
+        this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getPpsNumber(), 1));
         return "register_success.html";
+    }
+
+    public Boolean getUserByPPSN(String ppsn) {
+        var users = getAllUsers();
+        var user =  users.stream().filter(t -> ppsn.equals(t.getPpsNumber())).findFirst().orElse(null);
+        return user != null;
+    }
+
+    public Boolean getUserByEmail(String email) {
+        var users = getAllUsers();
+        var user =  users.stream().filter(t -> email.equals(t.getEmail())).findFirst().orElse(null);
+        return user != null;
+    }
+
+    public List<AllUsers> getAllUsers() {
+        return  userRepository.findAll();
     }
 
     @GetMapping("/login")

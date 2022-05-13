@@ -9,7 +9,7 @@ public class AllUsers implements User{
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -17,12 +17,20 @@ public class AllUsers implements User{
 
     private String role;
 
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String ppsNumber;
+
     private int enabled;
 
-    public AllUsers(String username, String password, String role, int enabled) {
+    public AllUsers(String username, String password, String role, String email, String ppsNumber, int enabled) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.email = email;
+        this.ppsNumber = ppsNumber;
         this.enabled = enabled;
     }
 
@@ -62,6 +70,24 @@ public class AllUsers implements User{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPpsNumber() {
+        return ppsNumber;
+    }
+
+    public void setPpsNumber(String ppsn) {
+        this.ppsNumber = ppsn;
     }
 
     @Override
