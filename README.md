@@ -30,7 +30,7 @@ when registering a new user. All pre-created users and admin use the password "p
 
 ## Security Requirements
 - [x] During user registration, force users to choose strong passwords. If possible, force the use of 2-factor authentication. -Roland
-- [] Ensure that different users cannot register using the same email and/or PPS number of an already registered user
+- [x] Ensure that different users cannot register using the same email and/or PPS number of an already registered user -Roland
 - [] Limit the number of consecutive failed authentication attempts to 3.
 - [] If an IP address performs 3 consecutive failed authentication attempts, block it for a given amount of time (e.g., 20 mins).
 - [x] Validate the input data provided by the users during registration and in the questions forum. In particular, avoid creating users associated with the same PPS number or email address. -Roland
