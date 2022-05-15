@@ -34,7 +34,7 @@ when registering a new user. All pre-created users and admin use the password "p
 - [x] Limit the number of consecutive failed authentication attempts to 3. -Lucy
 - [x] If an IP address performs 3 consecutive failed authentication attempts, block it for a given amount of time (e.g., 20 mins). -Lucy
 - [x] Validate the input data provided by the users during registration and in the questions forum. In particular, avoid creating users associated with the same PPS number or email address. -Roland
-- [] Handle the errors that are shown to the users in order not to expose implementation information related to your applications. For example, you can return custom error pages when an exception occurs.
+- [x] Handle the errors that are shown to the users in order not to expose implementation information related to your applications. For example, you can return custom error pages when an exception occurs. -Daiana
 - [x] Enforce the use of https. -Lucy
 - [] Implement appropriate access control to only allow the user associated with a specific account to access his/her vaccination information. Also apply access control policies to regulate access to the urls that should only be accessible to healthcare staff.
 - [] Perform appropriate logging using the log4j Java framework to record sensitive operations, such as logins, access to/modification of sensitive information (reservations, credit card information).
