@@ -1,6 +1,8 @@
 package com.a1.insecureswe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 @Entity(name = "staff")
 @Table(name = "staff")
@@ -10,15 +12,19 @@ public class Staff implements User {
     private Long id;
 
     @Column(unique = true)
+    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9_]{2,30}$")
     private String username;
 
     @Column
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[./!@#$%^&*_=+-]).{8,60}$")
     private String password;
 
     @Column(unique = true)
+    @Email
     private String email;
 
     @Column(unique = true)
+    @Pattern(regexp = "^(\\d{7})([A-Z]{1,2})$")
     private String ppsNumber;
 
     private String role;
