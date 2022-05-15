@@ -58,6 +58,7 @@ public class UserInfo implements User{
     private String email;
 
     @Column
+    @Pattern(regexp = "^[A-Za-z]{2,30}$")
     private String nationality;
 
     @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL)
