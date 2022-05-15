@@ -8,15 +8,15 @@
 
 
 Password must be 8-30 characters long and Must contain at least one of each: Uppercase, Lowercase, Number, and Symbol,
-when registering a new user. All pre-created users and admin use the password "password" for convenience of testing.
+when registering a new user.
 
 ###Admin login:
 - username: admin
-- password: password
+- password: PassWord1@
 
 ###Users login:
 - username: john, jane, mark, mary
-- password: password
+- password: PassWord1@
 
 ## Requirements
 - [x] Users can register to the Vaccination System. - Roland
