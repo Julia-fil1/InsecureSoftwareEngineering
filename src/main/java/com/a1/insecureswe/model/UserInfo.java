@@ -1,5 +1,6 @@
 package com.a1.insecureswe.model;
 
+import com.a1.insecureswe.AttributeEncryptor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -30,16 +31,20 @@ public class UserInfo implements User{
     @Column
     private String surname;
 
+    // @Convert(converter = AttributeEncryptor.class)
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
+    @Convert(converter = AttributeEncryptor.class)
     @Column(unique = true)
     private String ppsNumber;
 
+    @Convert(converter = AttributeEncryptor.class)
     @Column
     private String address;
 
+    @Convert(converter = AttributeEncryptor.class)
     @Column
     private String phoneNumber;
 

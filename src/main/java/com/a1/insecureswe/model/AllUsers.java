@@ -1,5 +1,7 @@
 package com.a1.insecureswe.model;
 
+import com.a1.insecureswe.AttributeEncryptor;
+
 import javax.persistence.*;
 
 @Entity(name = "all_users")
@@ -20,6 +22,7 @@ public class AllUsers implements User{
     @Column(unique = true)
     private String email;
 
+    @Convert(converter = AttributeEncryptor.class)
     @Column(unique = true)
     private String ppsNumber;
 
