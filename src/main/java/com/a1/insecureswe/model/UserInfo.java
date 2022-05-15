@@ -139,11 +139,7 @@ public class UserInfo implements User{
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
-        if (Period.between(dob, LocalDate.now()).getYears() >= 18) {
-            this.dob = dob;
-        }
-    }
+    public void setDob(LocalDate dob) { this.dob = dob; }
 
     public String getPpsNumber() {
         return ppsNumber;
