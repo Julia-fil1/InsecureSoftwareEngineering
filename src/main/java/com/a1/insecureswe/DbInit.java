@@ -43,7 +43,7 @@ public class DbInit implements CommandLineRunner {
 
 //        user_info.setId(1L);
         user_info.setUsername("john");
-        user_info.setPassword(passwordEncoder.encode("password"));
+        user_info.setPassword(passwordEncoder.encode("PassWord1@"));
         user_info.setRole("VACCINEE");
         user_info.setEnabled(1);
         user_info.setName("John");
@@ -58,7 +58,7 @@ public class DbInit implements CommandLineRunner {
         UserInfo user_info_2 = new UserInfo();
 
         user_info_2.setUsername("jane");
-        user_info_2.setPassword(passwordEncoder.encode("password"));
+        user_info_2.setPassword(passwordEncoder.encode("PassWord1@"));
         user_info_2.setRole("VACCINEE");
         user_info_2.setEnabled(1);
         user_info_2.setName("Jane");
@@ -73,7 +73,7 @@ public class DbInit implements CommandLineRunner {
         UserInfo user_info_3 = new UserInfo();
 
         user_info_3.setUsername("mark");
-        user_info_3.setPassword(passwordEncoder.encode("password"));
+        user_info_3.setPassword(passwordEncoder.encode("PassWord1@"));
         user_info_3.setRole("VACCINEE");
         user_info_3.setEnabled(1);
         user_info_3.setName("Mark");
@@ -88,7 +88,7 @@ public class DbInit implements CommandLineRunner {
         UserInfo user_info_4 = new UserInfo();
 
         user_info_4.setUsername("mary");
-        user_info_4.setPassword(passwordEncoder.encode("password"));
+        user_info_4.setPassword(passwordEncoder.encode("PassWord1@"));
         user_info_4.setRole("VACCINEE");
         user_info_4.setEnabled(1);
         user_info_4.setName("Mary");
@@ -105,7 +105,7 @@ public class DbInit implements CommandLineRunner {
         AllUsers newVaccineeUser3 = new AllUsers(user_info_3.getUsername(), user_info_3.getPassword(), user_info_3.getRole(),user_info_3.getEmail(),user_info_3.getPpsNumber(), 1);
         AllUsers newVaccineeUser4 = new AllUsers(user_info_4.getUsername(), user_info_4.getPassword(), user_info_4.getRole(),user_info_4.getEmail(),user_info_4.getPpsNumber(), 1);
 
-        Staff staff =  new Staff("admin", passwordEncoder.encode("password"), "ADMIN", "admin@yahoo.com", "1234567Z", 1);
+        Staff staff =  new Staff("admin", passwordEncoder.encode("PassWord1@"), "ADMIN", "admin@yahoo.com", "1234567Z", 1);
         AllUsers newStaffUser = new AllUsers(staff.getUsername(), staff.getPassword(), staff.getRole(), staff.getEmail(), staff.getPpsNumber(), 1);
 
 // -------------------------- FORUM --------------------------

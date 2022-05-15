@@ -8,15 +8,15 @@
 
 
 Password must be 8-30 characters long and Must contain at least one of each: Uppercase, Lowercase, Number, and Symbol,
-when registering a new user. All pre-created users and admin use the password "password" for convenience of testing.
+when registering a new user.
 
 ###Admin login:
 - username: admin
-- password: password
+- password: PassWord1@
 
 ###Users login:
 - username: john, jane, mark, mary
-- password: password
+- password: PassWord1@
 
 ## Requirements
 - [x] Users can register to the Vaccination System. - Roland
@@ -31,11 +31,11 @@ when registering a new user. All pre-created users and admin use the password "p
 ## Security Requirements
 - [x] During user registration, force users to choose strong passwords. If possible, force the use of 2-factor authentication. -Roland
 - [x] Ensure that different users cannot register using the same email and/or PPS number of an already registered user -Roland
-- [] Limit the number of consecutive failed authentication attempts to 3.
-- [] If an IP address performs 3 consecutive failed authentication attempts, block it for a given amount of time (e.g., 20 mins).
+- [x] Limit the number of consecutive failed authentication attempts to 3. -Lucy
+- [x] If an IP address performs 3 consecutive failed authentication attempts, block it for a given amount of time (e.g., 20 mins). -Lucy
 - [x] Validate the input data provided by the users during registration and in the questions forum. In particular, avoid creating users associated with the same PPS number or email address. -Roland
-- [] Handle the errors that are shown to the users in order not to expose implementation information related to your applications. For example, you can return custom error pages when an exception occurs.
-- [] Enforce the use of https.
+- [x] Handle the errors that are shown to the users in order not to expose implementation information related to your applications. For example, you can return custom error pages when an exception occurs. -Daiana
+- [x] Enforce the use of https. -Lucy
 - [] Implement appropriate access control to only allow the user associated with a specific account to access his/her vaccination information. Also apply access control policies to regulate access to the urls that should only be accessible to healthcare staff.
 - [] Perform appropriate logging using the log4j Java framework to record sensitive operations, such as logins, access to/modification of sensitive information (reservations, credit card information).
 - [] Support session management using JSON Web Tokens

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("admin")
@@ -52,11 +53,22 @@ public class StaffController {
     }
 
     @PostMapping("/answer_question")
-    public String processQuestion(Forum forum) throws QuestionNotFoundException {
+    public String processQuestion(@ModelAttribute("forum") Forum forum) throws QuestionNotFoundException{
+        if (!getForumById(forum.getId())){
+            System.out.println("There is no question associated with this ID");
+            return "redirect:forum";
+        }
+
         Forum forum1 = forumRepository.findById(forum.getId()).orElseThrow(() -> new QuestionNotFoundException(forum.getId()));
         forum1.setAnswer(forum.getAnswer());
         this.forumRepository.save(forum1);
         return "redirect:forum";
+    }
+
+    public Boolean getForumById(long id) {
+        var forums = forumRepository.findAll();
+        var forum =  forums.stream().filter(t -> id == (t.getId())).findFirst().orElse(null);
+        return forum != null;
     }
 
     @GetMapping("/edit_user/{id}")

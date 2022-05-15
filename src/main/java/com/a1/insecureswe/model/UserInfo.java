@@ -4,6 +4,10 @@ import com.a1.insecureswe.AttributeEncryptor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -16,9 +20,11 @@ public class UserInfo implements User{
     private Long id;
 
     @Column
+    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9_]{2,30}$")
     private String username;
 
     @Column
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[./!@#$%^&*_=+-]).{8,60}$")
     private String password;
 
     private String role;
@@ -26,9 +32,11 @@ public class UserInfo implements User{
     private int enabled;
 
     @Column
+    @Pattern(regexp = "^[A-Za-z]{2,30}$")
     private String name;
 
     @Column
+    @Pattern(regexp = "^[A-Za-z]{2,30}$")
     private String surname;
 
     // @Convert(converter = AttributeEncryptor.class)
@@ -38,6 +46,7 @@ public class UserInfo implements User{
 
     @Convert(converter = AttributeEncryptor.class)
     @Column(unique = true)
+    @Pattern(regexp = "^(\\d{7})([A-Z]{1,2})$")
     private String ppsNumber;
 
     @Convert(converter = AttributeEncryptor.class)
@@ -46,12 +55,15 @@ public class UserInfo implements User{
 
     @Convert(converter = AttributeEncryptor.class)
     @Column
+    @Pattern(regexp = "^\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{1,3})?[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\s*$")
     private String phoneNumber;
 
     @Column(unique = true)
+    @Email
     private String email;
 
     @Column
+    @Pattern(regexp = "^[A-Za-z]{2,30}$")
     private String nationality;
 
     @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL)

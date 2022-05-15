@@ -65,22 +65,6 @@ public class MainController {
         return "register_success.html";
     }
 
-    public Boolean getUserByPPSN(String ppsn) {
-        var users = getAllUsers();
-        var user =  users.stream().filter(t -> ppsn.equals(t.getPpsNumber())).findFirst().orElse(null);
-        return user != null;
-    }
-
-    public Boolean getUserByEmail(String email) {
-        var users = getAllUsers();
-        var user =  users.stream().filter(t -> email.equals(t.getEmail())).findFirst().orElse(null);
-        return user != null;
-    }
-
-    public List<AllUsers> getAllUsers() {
-        return  userRepository.findAll();
-    }
-
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request, @RequestParam("error" ) final Optional<String> error) {
         error.ifPresent(e -> {

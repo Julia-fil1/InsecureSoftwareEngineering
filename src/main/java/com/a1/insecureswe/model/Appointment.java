@@ -3,6 +3,7 @@ package com.a1.insecureswe.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,7 +19,7 @@ public class Appointment {
     private LocalDate appointmentDate;
 
     @Column
-    //@DateTimeFormat(pattern = "HH:mm")
+    @Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]")
     private String appointmentTime;
 
     @Column
@@ -69,6 +70,9 @@ public class Appointment {
     }
 
     public void setLocation(String location) {
+        if (!location.equals("UCD") && !location.equals("DCU") && !location.equals("CityWest") && !location.equals("Ongar"))
+            location = "UCD";
+
         this.location = location;
     }
 
@@ -77,6 +81,9 @@ public class Appointment {
     }
 
     public void setVaccineType(String vaccineType) {
+        if (!vaccineType.equals("Moderna") && !vaccineType.equals("Pfizer-BioNTech"))
+            vaccineType = "Pfizer-BioNTech";
+
         this.vaccineType = vaccineType;
     }
 
