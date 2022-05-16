@@ -132,7 +132,7 @@ public class StaffController {
             nextAppointment.setVaccineType(user.getAppointments().get(0).getVaccineType());
             appointmentRepository.save(nextAppointment);
 
-            insecureLogger.info("New appointment automatically booked for user " + user.getUsername() + " at " + nextAppointment.getAppointmentTime() + " on " + nextAppointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE));
+            insecureLogger.info("New appointment automatically booked for user " + user.getUsername() + " at " + nextAppointment.getAppointmentTime() + " on " + nextAppointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE) + " at the " + nextAppointment.getLocation() + " centre.");
 
             List<Appointment> userAppointments = user.getAppointments();
             userAppointments.add(nextAppointment);

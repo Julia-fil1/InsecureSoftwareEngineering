@@ -50,7 +50,7 @@ public class VaccineeController {
             currentUser.setLatestVaccinationDate(currentUser.getAppointments().get(1).getAppointmentDate());
         }
         userInfoRepository.save(currentUser);
-        insecureLogger.info("New appointment successfully created for user " + currentUser.getUsername() + " at " + appointment.getAppointmentTime() + " on " + appointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE));
+        insecureLogger.info("New appointment successfully created for user " + currentUser.getUsername() + " at " + appointment.getAppointmentTime() + " on " + appointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE) + " at the " + appointment.getLocation() + " centre.");
 
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";

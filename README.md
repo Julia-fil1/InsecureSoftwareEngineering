@@ -37,7 +37,7 @@ when registering a new user.
 - [x] Handle the errors that are shown to the users in order not to expose implementation information related to your applications. For example, you can return custom error pages when an exception occurs. -Daiana
 - [x] Enforce the use of https. -Lucy
 - [x] Implement appropriate access control to only allow the user associated with a specific account to access his/her vaccination information. Also apply access control policies to regulate access to the urls that should only be accessible to healthcare staff. -Roland, Lucy, Daiana, Julia
-- [] Perform appropriate logging using the log4j Java framework to record sensitive operations, such as logins, access to/modification of sensitive information (reservations, credit card information).
+- [x] Perform appropriate logging using the log4j Java framework to record sensitive operations, such as logins, access to/modification of sensitive information (reservations, credit card information). -Lucy
 - [] Support session management using JSON Web Tokens
 - [x] Encrypt sensitive information (such as PPS number, phone number, date of birth) when storing this information in the database. -Lucy
 
