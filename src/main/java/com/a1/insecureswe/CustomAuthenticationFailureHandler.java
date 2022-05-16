@@ -24,11 +24,8 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         super.onAuthenticationFailure(request, response, exception);
 
         String errorMessage = "Invalid username or password";
-        System.out.println("Made it to invalid credentials error message");
-        System.out.println(exception.getMessage());
 
         if (loginAttemptService.isBlocked(request.getRemoteAddr())) {
-            System.out.println("Made it to blocked error message");
             errorMessage = "Your IP is blocked from logging in for 1 hour";
         }
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
