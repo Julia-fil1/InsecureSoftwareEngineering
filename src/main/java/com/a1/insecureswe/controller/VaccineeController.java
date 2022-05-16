@@ -1,5 +1,7 @@
 package com.a1.insecureswe.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.UserInfo;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +24,8 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("vaccinee")
 public class VaccineeController {
+    private static final Logger insecureLogger = LogManager.getLogger(VaccineeController.class);
+
     @Autowired
     AppointmentRepository appointmentRepository;
 
@@ -45,6 +50,7 @@ public class VaccineeController {
             currentUser.setLatestVaccinationDate(currentUser.getAppointments().get(1).getAppointmentDate());
         }
         userInfoRepository.save(currentUser);
+        insecureLogger.info("New appointment successfully created for user " + currentUser.getUsername() + " at " + appointment.getAppointmentTime() + " on " + appointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE));
 
         model.addAttribute("appointment", appointment);
         return "vaccinee/booking_success";
@@ -120,6 +126,7 @@ public class VaccineeController {
         List<Appointment> listApp = currentUser.getAppointments();
         model.addAttribute("listApp", listApp);
 
+        insecureLogger.info("User " + currentUser.getUsername() + " has accessed their vaccine history.");
         if(listApp.isEmpty()) {
             return "/vaccinee/history_clean";
         } else {

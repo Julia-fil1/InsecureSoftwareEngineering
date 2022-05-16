@@ -5,16 +5,23 @@ import com.a1.insecureswe.exception.QuestionNotFoundException;
 import com.a1.insecureswe.exception.UserNotFoundException;
 import com.a1.insecureswe.model.Appointment;
 import com.a1.insecureswe.model.Forum;
+import com.a1.insecureswe.model.Staff;
 import com.a1.insecureswe.model.UserInfo;
 import com.a1.insecureswe.repository.AppointmentRepository;
 import com.a1.insecureswe.repository.ForumRepository;
+import com.a1.insecureswe.repository.StaffRepository;
 import com.a1.insecureswe.repository.UserInfoRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,8 +30,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping("admin")
 public class StaffController {
+    private static final Logger insecureLogger = LogManager.getLogger(StaffController.class);
+
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private ForumRepository forumRepository;
@@ -89,6 +101,7 @@ public class StaffController {
                         model.addAttribute("listApp", l);
                     }
                 }
+                insecureLogger.info("Admin " + getCurrentAdmin().getUsername() + " has accessed the details of user " + u.getUsername() + ".");
             }
         }
 
@@ -100,6 +113,10 @@ public class StaffController {
         // System.out.println("id " + userInfo.getId());
 
         UserInfo user = userInfoRepository.findById(userInfo.getId()).orElseThrow(() -> new UserNotFoundException(userInfo.getId()));
+
+        if (user.getDoseNumber() < doseNumber) {
+            insecureLogger.info("Dose number of user " + user.getUsername() + " has been increased by " + (doseNumber - user.getDoseNumber()) + ".");
+        }
 
         user.setDoseNumber(doseNumber);
         if(doseNumber == 1 && user.getAppointments().size() == 1) {
@@ -115,6 +132,8 @@ public class StaffController {
             nextAppointment.setVaccineType(user.getAppointments().get(0).getVaccineType());
             appointmentRepository.save(nextAppointment);
 
+            insecureLogger.info("New appointment automatically booked for user " + user.getUsername() + " at " + nextAppointment.getAppointmentTime() + " on " + nextAppointment.getAppointmentDate().format(DateTimeFormatter.ISO_DATE));
+
             List<Appointment> userAppointments = user.getAppointments();
             userAppointments.add(nextAppointment);
             user.setAppointments(userAppointments);
@@ -125,7 +144,6 @@ public class StaffController {
             user.setLatestVaccinationDate(LocalDate.now());
             userInfoRepository.save(user);
         }
-
         return "admin/edit_user_success";
     }
 
@@ -133,6 +151,7 @@ public class StaffController {
     public String changeType(Appointment app) throws AppointmentNotFoundException {
         Appointment a = appointmentRepository.findById(app.getId()).orElseThrow(() -> new AppointmentNotFoundException(app.getId()));
         a.setVaccineType(app.getVaccineType());
+        insecureLogger.info("Vaccine type for appointment " + a.getId() + " has been changed to " + app.getVaccineType());
         this.appointmentRepository.save(a);
         return "admin/edit_user_success";
     }
@@ -227,5 +246,18 @@ public class StaffController {
         model.addAttribute("totalAge65Plus", totalAge65Plus);
 
         return "/admin/logged_in_home_staff";
+    }
+
+    // Short method to fetch admin that's currently logged in
+    private Staff getCurrentAdmin() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username;
+        if(principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return staffRepository.findByUsername(username);
     }
 }

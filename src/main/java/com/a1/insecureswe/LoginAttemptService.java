@@ -1,8 +1,12 @@
 package com.a1.insecureswe;
 
+import com.a1.insecureswe.repository.UserInfoRepository;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
@@ -10,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginAttemptService {
+    private static final Logger insecureLogger = LogManager.getLogger(LoginAttemptService.class);
     private final int MAX_ATTEMPT = 3;
     private LoadingCache<String, Integer> attemptsCache;
 
@@ -24,30 +29,27 @@ public class LoginAttemptService {
     }
 
     public void loginSucceeded(String key) {
+        insecureLogger.info("IP " + key + " has successfully logged in.");
         attemptsCache.invalidate(key);
     }
 
     public void loginFailed(String key) {
         int attempts = 0;
-        System.out.println("LoginAttemptService for failure reached");
+
         try {
             attempts = attemptsCache.get(key);
         } catch (ExecutionException ex) {
             attempts = 0;
         }
-        System.out.println("Attempts for IP increased: " + key);
         attempts++;
-        System.out.println("Current Attempts for key " + key + " = " + attempts);
+        insecureLogger.info("IP " + key + " has failed to log in " + attempts + " times.");
         attemptsCache.put(key, attempts);
     }
 
     public boolean isBlocked(String key) {
-        System.out.println("isBlocked in LoginAttemptService reached");
         try {
-            System.out.println("isBlocked = " + (attemptsCache.get(key) >= MAX_ATTEMPT));
             return attemptsCache.get(key) >= MAX_ATTEMPT;
         } catch (ExecutionException ex) {
-            System.out.println("isBlocked -- Execution Exception returned, IP not blocked");
             return false;
         }
     }

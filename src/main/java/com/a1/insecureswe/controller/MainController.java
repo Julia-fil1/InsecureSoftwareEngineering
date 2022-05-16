@@ -3,6 +3,8 @@ package com.a1.insecureswe.controller;
 import com.a1.insecureswe.LoginAttemptService;
 import com.a1.insecureswe.model.*;
 import com.a1.insecureswe.repository.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @Controller
 public class MainController {
+    private static final Logger insecureLogger = LogManager.getLogger(MainController.class);
 
     @Autowired
     private UserInfoRepository userInfoRepository;
@@ -62,6 +65,7 @@ public class MainController {
         user.setEnabled(1);
         this.userInfoRepository.save(user);
         this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getPpsNumber(), 1));
+        insecureLogger.info("New user: " + user.getUsername() + " has been created successfully.");
         return "register_success.html";
     }
 
@@ -71,6 +75,7 @@ public class MainController {
             model.addAttribute("error", e);
         });
         if (loginAttemptService.isBlocked(request.getRemoteAddr())) {
+            insecureLogger.info("IP " + request.getRemoteAddr() + " is currently blocked.");
             return "blocked.html";
         } else {
             return "login.html";
@@ -93,6 +98,7 @@ public class MainController {
 
     @GetMapping("/adminOnly")
     public String only() {
+        insecureLogger.info("Unauthorised account has been prevented from accessing admin page.");
         return "adminOnly.html";
     }
 
