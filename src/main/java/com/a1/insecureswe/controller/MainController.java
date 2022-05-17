@@ -185,7 +185,6 @@ public class MainController {
         } else if(principal.toString().contains("ADMIN")) {
             return "redirect:/admin/logged_in_home_staff";
         } else{
-            System.out.println(principal.toString());
             return "home_page.html";
         }
     }
