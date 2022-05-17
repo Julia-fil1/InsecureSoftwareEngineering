@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .requiresChannel(channel -> channel.anyRequest().requiresSecure())
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/", "/resources/**").permitAll()
+                .antMatchers("/login", "/register", "/", "/images/**", "/css/**", "/templates/**", "/resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
