@@ -10,11 +10,11 @@
 Password must be 8-30 characters long and Must contain at least one of each: Uppercase, Lowercase, Number, and Symbol,
 when registering a new user.
 
-###Admin login:
+### Admin login:
 - username: admin
 - password: PassWord1@
 
-###Users login:
+### Users login:
 - username: john, jane, mark, mary
 - password: PassWord1@
 
@@ -38,6 +38,6 @@ when registering a new user.
 - [x] Enforce the use of https. -Lucy
 - [x] Implement appropriate access control to only allow the user associated with a specific account to access his/her vaccination information. Also apply access control policies to regulate access to the urls that should only be accessible to healthcare staff. -Roland, Lucy, Daiana, Julia
 - [x] Perform appropriate logging using the log4j Java framework to record sensitive operations, such as logins, access to/modification of sensitive information (reservations, credit card information). -Lucy
-- [] Support session management using JSON Web Tokens
+- [x] Support session management using JSON Web Tokens - Julia
 - [x] Encrypt sensitive information (such as PPS number, phone number, date of birth) when storing this information in the database. -Lucy
 
