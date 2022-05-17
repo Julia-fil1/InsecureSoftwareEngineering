@@ -1,4 +1,4 @@
-package com.a1.insecureswe;
+package com.a1.insecureswe.security;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;

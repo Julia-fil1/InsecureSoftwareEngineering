@@ -1,16 +1,13 @@
 package com.a1.insecureswe.model;
 
-import com.a1.insecureswe.AttributeEncryptor;
-import com.a1.insecureswe.LocalDateEncryptor;
+import com.a1.insecureswe.security.AttributeEncryptor;
+import com.a1.insecureswe.security.LocalDateEncryptor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
 @Entity(name = "vaccinees")

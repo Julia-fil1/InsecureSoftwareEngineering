@@ -1,4 +1,4 @@
-package com.a1.insecureswe;
+package com.a1.insecureswe.security;
 
 import java.io.IOException;
 import java.util.Collection;

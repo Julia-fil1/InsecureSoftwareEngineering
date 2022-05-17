@@ -1,6 +1,6 @@
 package com.a1.insecureswe.controller;
 
-import com.a1.insecureswe.LoginAttemptService;
+import com.a1.insecureswe.security.LoginAttemptService;
 import com.a1.insecureswe.model.*;
 import com.a1.insecureswe.repository.*;
 import org.apache.logging.log4j.LogManager;

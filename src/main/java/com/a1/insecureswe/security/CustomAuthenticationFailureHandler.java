@@ -1,4 +1,4 @@
-package com.a1.insecureswe;
+package com.a1.insecureswe.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
