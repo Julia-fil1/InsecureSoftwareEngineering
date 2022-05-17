@@ -3,9 +3,13 @@ package com.a1.insecureswe.controller;
 import com.a1.insecureswe.LoginAttemptService;
 import com.a1.insecureswe.model.*;
 import com.a1.insecureswe.repository.*;
+import com.a1.insecureswe.security.JWTUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -31,6 +37,12 @@ public class MainController {
 
     @Autowired
     private LoginAttemptService loginAttemptService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private AuthenticationManager authManager;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -66,6 +78,9 @@ public class MainController {
         this.userInfoRepository.save(user);
         this.userRepository.save(new AllUsers(user.getUsername(), user.getPassword(), user.getRole(), user.getEmail(), user.getPpsNumber(), 1));
         insecureLogger.info("New user: " + user.getUsername() + " has been created successfully.");
+        String token = jwtUtil.generateToken(user.getUsername());
+        System.out.println("registered successfully, generating token");
+        System.out.println("jwt-token " + token);
         return "register_success.html";
     }
 
@@ -79,6 +94,25 @@ public class MainController {
             return "blocked.html";
         } else {
             return "login.html";
+        }
+    }
+
+    @PostMapping("/login")
+    public Map<String, Object> loginHandler(@RequestBody LoginCredentials body){
+        try {
+            UsernamePasswordAuthenticationToken authInputToken =
+                    new UsernamePasswordAuthenticationToken(body.getUsername(), body.getPassword());
+
+            authManager.authenticate(authInputToken);
+
+            String token = jwtUtil.generateToken(body.getUsername());
+
+            System.out.println("logged in successfully, generating token");
+            System.out.println("jwt-token " + token);
+
+            return Collections.singletonMap("jwt-token", token);
+        }catch (AuthenticationException authExc){
+            throw new RuntimeException("Invalid Login Credentials");
         }
     }
 
